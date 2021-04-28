@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Android1_Notes</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="open_fragment">open fragment</string>
+    <string name="increase_counter">increase counter</string>
+    <string name="default_counterTextView">0</string>
+    <!--  for CityHeraldry  -->
+
 </resources>
