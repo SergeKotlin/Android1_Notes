@@ -1,33 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+<!-- это макет для портретной ориентации -->
+<!-- в портретной ориентации у activity только один фрагмент -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
     <fragment
-        android:id="@+id/fragment_A"
-        android:name="com.android1.android1_notes.Fragment_A"
+        android:id="@+id/cities"
+        android:name="com.android1.android1_notes.CityHeraldry6Lesson.CitiesFragment"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent" />
 
-    <!-- *
-        <fragment
-        android:id="@+id/fragment_B"
-        android:name="com.android1.android1_notes.Fragment_B"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+</FrameLayout>
 
-        и FrameLayout ниже закомитить  &ndash;&gt;-->
-
-    <FrameLayout
-        android:id="@+id/fragmentContainer"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-</LinearLayout>
