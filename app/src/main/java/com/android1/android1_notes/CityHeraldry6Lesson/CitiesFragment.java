@@ -51,7 +51,7 @@ public class CitiesFragment extends Fragment {
             tv.setText(city);
             tv.setTextSize(30);
             layoutView.addView(tv);
-            final int fi = i;
+            final int fi = i; // не можем внутрь анонимного класса передать не final - иначе гонка потоков
             tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -115,9 +115,14 @@ public class CitiesFragment extends Fragment {
         // Создаём новый фрагмент с текущей позицией для вывода герба
 //        CoatOfArmsFragment detail = CoatOfArmsFragment.newInstance(index);
         CoatOfArmsFragment detail = CoatOfArmsFragment.newInstance(currentCity);
+        // newInstance - создание фрагмгента в статичном методе
 
         // Выполняем транзакцию по замене фрагмента
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        // - сэнсэй заметил, что вернее было бы внутри фрагмента просто взять ChildFragmentManager
+        // т.е: FragmentManager fragmentManager = getChildFragmentManager();
+        // Фрагменты должны свободно жить в приложении, как самоизолированные юниты,
+        // с потенциальной возможностью быть вызванными в любой активити, без жёстких привязок
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.coat_of_arms, detail);  // замена фрагмента
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
