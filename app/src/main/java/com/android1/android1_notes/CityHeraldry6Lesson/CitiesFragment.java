@@ -8,12 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.android1.android1_notes.CityHeraldry6Lesson.event_bus.EventBus;
+import com.android1.android1_notes.CityHeraldry6Lesson.event_bus.events.ButtonClickedEvent;
+import com.squareup.otto.Subscribe;
 
 public class CitiesFragment extends Fragment {
 
@@ -36,6 +41,23 @@ public class CitiesFragment extends Fragment {
         initList(view);
     }
 
+    //
+    // Почитаем Event, что "пульнули" в CatOfArmsFragment (для примера с EventBus)
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getBus().register(this);
+
+    }
+    // Обязательно нужно отписываться от слушания Event'а.
+    // Чтобы не было crash на повторной подписке на объект слушания
+    @Override
+    public void onStop() {
+        EventBus.getBus().unregister(this);
+        super.onStop();
+    }
+    //
+
     // создаём список городов на экране из массива в ресурсах
     private void initList(View view) {
         LinearLayout layoutView = (LinearLayout)view;
@@ -52,14 +74,11 @@ public class CitiesFragment extends Fragment {
             tv.setTextSize(30);
             layoutView.addView(tv);
             final int fi = i; // не можем внутрь анонимного класса передать не final - иначе гонка потоков
-            tv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            tv.setOnClickListener(v -> {
 //                    currentPosition = fi;
 //                    showCoatOfArms(currentPosition);
-                    currentCity = new City(fi, getResources().getStringArray(R.array.cities)[fi]);
-                    showCoatOfArms(currentCity);
-                }
+                currentCity = new City(fi, getResources().getStringArray(R.array.cities)[fi]);
+                showCoatOfArms(currentCity);
             });
         }
     }
@@ -140,4 +159,13 @@ public class CitiesFragment extends Fragment {
         intent.putExtra(CoatOfArmsFragment.ARG_CITY, currentCity);
         startActivity(intent);
     }
+
+    //
+    // Публичный метод слушания Event'а (для примера с EventBus)
+    @Subscribe
+    public void onButtonClickedEvent(ButtonClickedEvent event) {
+        Toast.makeText(requireContext(), String.valueOf(event.count),
+                Toast.LENGTH_SHORT).show();
+    }
+
 }

@@ -10,6 +10,9 @@ import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 
+import com.android1.android1_notes.CityHeraldry6Lesson.event_bus.EventBus;
+import com.android1.android1_notes.CityHeraldry6Lesson.event_bus.events.ButtonClickedEvent;
+
 public class CoatOfArmsFragment extends Fragment {
 
 //    protected static final String ARG_INDEX = "index";
@@ -56,6 +59,16 @@ public class CoatOfArmsFragment extends Fragment {
         // Установить название города
         TextView cityNameView = view.findViewById(R.id.textView);
         cityNameView.setText(city.getCityName());
+        //
+        // Повесим на текстовую вьюуху слушатель для примера с EventBus
+        cityNameView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // и "пульнём" Event =)
+                EventBus.getBus().post(new ButtonClickedEvent(5));
+            }
+        });
+        //
         return view;
     }
 }
