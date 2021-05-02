@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.Random;
+
 public class NotesFragment extends Fragment {
 
     // При создании фрагмента укажем его макет
@@ -42,6 +44,9 @@ public class NotesFragment extends Fragment {
             TextView tv = new TextView(getContext());
             tv.setText(note);
             tv.setTextSize(30);
+
+            setNoteColor(tv);
+
             // не востребовано. Как пример конструкции просто  tv.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
             // и это tv.setScrollY(0);
             layoutView.addView(tv);
@@ -53,6 +58,21 @@ public class NotesFragment extends Fragment {
                 }
             });
         }
+    }
+
+    //TODO #1_Not_important ИСКЛЮЧИТЬ ПОВТОР ЦВЕТОВ ДРУГ ЗА ДРУГОМ
+    private void setNoteColor(TextView tv) {
+        int[] notes_colors = getResources().getIntArray(R.array.notes_colors);
+        int note_color;
+        int size_colors_arr = notes_colors.length;
+        if (size_colors_arr <= 0) {
+            note_color = R.color.yellow_note;
+        } else {
+            Random random = new Random();
+            int ind_note_color = random.nextInt(size_colors_arr);
+            note_color = notes_colors[ind_note_color];
+        }
+        tv.setTextColor(note_color);
     }
 
     // Открыть заметку в портретной ориентации.
