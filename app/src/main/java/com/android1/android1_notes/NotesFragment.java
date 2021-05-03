@@ -1,6 +1,7 @@
 package com.android1.android1_notes;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +12,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.util.Random;
 
 public class NotesFragment extends Fragment {
+
+    private boolean isLandscape;
 
     // При создании фрагмента укажем его макет
     @Override
@@ -54,7 +59,7 @@ public class NotesFragment extends Fragment {
             tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showPortCoatOfNote(fi);
+                    showCoatOfNote(fi);
                 }
             });
         }
@@ -73,6 +78,42 @@ public class NotesFragment extends Fragment {
             note_color = notes_colors[ind_note_color];
         }
         tv.setTextColor(note_color);
+    }
+
+    // activity создана, можно к ней обращаться. Выполним начальные действия
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // Определение, можно ли будет открыть рядом заметку в другом фрагменте
+        isLandscape = getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE;
+
+        // Если можно показать текст заметки рядом, сделаем это
+        if (isLandscape) {
+            showLandCoatOfNote(0);
+        }
+    }
+
+    private void showCoatOfNote(int index) {
+        if (isLandscape) {
+            showLandCoatOfNote(index);
+        } else {
+            showPortCoatOfNote(index);
+        }
+    }
+
+    // Показать заметки в ландшафтной ориентации
+    private void showLandCoatOfNote(int index) {
+        // Создаём новый фрагмент с текущей позицией для открытия заметки
+        CoatOfNoteFragment detail = CoatOfNoteFragment.newInstance(index);
+
+        // Выполняем транзакцию по замене фрагмента
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.coat_of_note, detail);  // замена фрагмента
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.commit();
     }
 
     // Открыть заметку в портретной ориентации.
