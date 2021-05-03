@@ -111,6 +111,8 @@ public class NotesFragment extends Fragment {
         // Если можно показать текст заметки рядом, сделаем это
         if (isLandscape) {
             showLandCoatOfNote(currentNote);
+        } else {
+            showPortCoatOfNote(currentNote);
         }
     }
 
