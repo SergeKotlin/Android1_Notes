@@ -19,6 +19,8 @@ import java.util.Random;
 
 public class NotesFragment extends Fragment {
 
+    public static final String CURRENT_NOTE = "CurrentNote";
+    private Note currentNote;    // Выбранная заметка
     private boolean isLandscape;
 
     // При создании фрагмента укажем его макет
@@ -55,14 +57,22 @@ public class NotesFragment extends Fragment {
             // не востребовано. Как пример конструкции просто  tv.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
             // и это tv.setScrollY(0);
             layoutView.addView(tv);
-            final int fi = i;
+            final int fi = i; // не можем внутрь анонимного класса передать не final - иначе гонка потоков
             tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showCoatOfNote(fi);
+                    currentNote = new Note(fi, getResources().getStringArray(R.array.notes)[fi]);
+                    showCoatOfNote(currentNote);
                 }
             });
         }
+    }
+
+    // Сохраним текущую позицию (вызывается перед выходом из фрагмента)
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putParcelable(CURRENT_NOTE, currentNote);
+        super.onSaveInstanceState(outState);
     }
 
     //TODO #1_Not_important ИСКЛЮЧИТЬ ПОВТОР ЦВЕТОВ ДРУГ ЗА ДРУГОМ
@@ -89,24 +99,33 @@ public class NotesFragment extends Fragment {
         isLandscape = getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE;
 
+        // Если это не первое создание, то восстановим текущую позицию
+        if (savedInstanceState != null) {
+            // Восстановление текущей позиции.
+            currentNote = savedInstanceState.getParcelable(CURRENT_NOTE);
+        } else {
+            // Если восстановить не удалось, то сделаем объект с первым индексом
+            currentNote = new Note(0, getResources().getStringArray(R.array.notes)[0]);
+        }
+
         // Если можно показать текст заметки рядом, сделаем это
         if (isLandscape) {
-            showLandCoatOfNote(0);
+            showLandCoatOfNote(currentNote);
         }
     }
 
-    private void showCoatOfNote(int index) {
+    private void showCoatOfNote(Note currentNote) {
         if (isLandscape) {
-            showLandCoatOfNote(index);
+            showLandCoatOfNote(currentNote);
         } else {
-            showPortCoatOfNote(index);
+            showPortCoatOfNote(currentNote);
         }
     }
 
     // Показать заметки в ландшафтной ориентации
-    private void showLandCoatOfNote(int index) {
+    private void showLandCoatOfNote(Note currentNote) {
         // Создаём новый фрагмент с текущей позицией для открытия заметки
-        CoatOfNoteFragment detail = CoatOfNoteFragment.newInstance(index);
+        CoatOfNoteFragment detail = CoatOfNoteFragment.newInstance(currentNote);
 
         // Выполняем транзакцию по замене фрагмента
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
@@ -117,12 +136,12 @@ public class NotesFragment extends Fragment {
     }
 
     // Открыть заметку в портретной ориентации.
-    private void showPortCoatOfNote(int index) {
+    private void showPortCoatOfNote(Note currentNote) {
         // Откроем вторую activity
         Intent intent = new Intent();
         intent.setClass(getActivity(), CoatOfNoteActivity.class);
         // и передадим туда параметры
-        intent.putExtra(CoatOfNoteFragment.ARG_INDEX, index);
+        intent.putExtra(CoatOfNoteFragment.ARG_NOTE, currentNote);
         startActivity(intent);
     }
 
