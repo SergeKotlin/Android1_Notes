@@ -2,6 +2,7 @@ package com.android1.android1_notes;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,7 +78,7 @@ public class NotesFragment extends Fragment {
 
     //TODO #1_Not_important ИСКЛЮЧИТЬ ПОВТОР ЦВЕТОВ ДРУГ ЗА ДРУГОМ
     private void setNoteColor(TextView tv) {
-        int[] notes_colors = getResources().getIntArray(R.array.notes_colors);
+        String[] notes_colors = getResources().getStringArray(R.array.notes_colors);
         int note_color;
         int size_colors_arr = notes_colors.length;
         if (size_colors_arr <= 0) {
@@ -85,7 +86,7 @@ public class NotesFragment extends Fragment {
         } else {
             Random random = new Random();
             int ind_note_color = random.nextInt(size_colors_arr);
-            note_color = notes_colors[ind_note_color];
+            note_color = Color.parseColor(notes_colors[ind_note_color]);
         }
         tv.setTextColor(note_color);
     }
