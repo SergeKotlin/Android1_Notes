@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Android1_Notes</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="default_is_first_note_name">Name Notes</string>
+    <string name="default_is_first_note_text">Text Notes</string>
 </resources>
