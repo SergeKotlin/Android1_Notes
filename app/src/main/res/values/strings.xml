@@ -12,4 +12,11 @@
     <string name="favorite">Favorite</string>
     <string name="main">Main</string>
     <string name="back">Back</string>
+    <string name="search">titleSearch</string>
+    <string name="titleMore">more</string>
+    <string name="something_else">Something Else</string>
+    <string name="another_thing">Another Thing</string>
+    <string name="item1_popup">Item 1</string>
+    <string name="item2_popup">Item 2</string>
+    <string name="new_menu_item_added">Menu item added</string>
 </resources>
