@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">Android1_Notes</string>
+    <string name="app_name">test app for CityHeraldry 6 Lesson</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="name_of_city_for_fragment">TextView</string>
+    <string name="text_view_default">Text View</string>
 </resources>
