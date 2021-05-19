@@ -25,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         readSettings();
         initView();
+
+        // Для кнопки "Назад"
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     // Подключаем меню в приложении
@@ -69,6 +72,12 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_favorite:
                 addFragment(new FavoriteFragment());
+                return true;
+
+            // Для кнопки "Назад"
+            case android.R.id.home:
+                Toast.makeText(getApplicationContext(),
+                        getString(R.string.back_clicked), Toast.LENGTH_SHORT).show();
                 return true;
         }
         return super.onOptionsItemSelected(item);
