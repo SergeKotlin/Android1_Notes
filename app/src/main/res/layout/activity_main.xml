@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- это макет для портретной ориентации -->
-<!-- в портретной ориентации у activity одновременно только один фрагмент (список или заметка) -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:shrinkColumns="0">
 
-    <fragment
-        android:id="@+id/notes"
-        android:name="com.android1.android1_notes.NotesFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <!--  Меню для главной страницы (со списком заметок). Портретная ор-ция  -->
+    <include layout="@layout/main_menu" />
 
-</FrameLayout>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <!-- это макет для портретной ориентации -->
+        <!-- в портретной ориентации у activity одновременно только
+        один фрагмент (либо список, либо заметка) -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <fragment
+                android:id="@+id/notes"
+                android:name="com.android1.android1_notes.NotesFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
+    </ScrollView>
+
+</TableLayout>

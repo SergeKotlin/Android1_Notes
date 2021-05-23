@@ -19,6 +19,9 @@ import androidx.fragment.app.FragmentTransaction;
 import java.util.Random;
 
 public class NotesFragment extends Fragment {
+// Эт главный код, для мэйн страницы
+// Главная страница (activity_main.xml) со списком заметок надувается программно (насколько я понял :D) - из данных хранимых массивов,
+// Здесь же управление ориентацией и показом второго фрагмента - с телом заметки
 
     public static final String CURRENT_NOTE = "CurrentNote";
     private Note currentNote;    // Выбранная заметка
@@ -138,7 +141,7 @@ public class NotesFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
-    // Открыть заметку в портретной ориентации.
+    // Открыть заметку в портретной ориентации
     private void showPortCoatOfNote(Note currentNote) {
         // Откроем вторую activity
         Intent intent = new Intent();

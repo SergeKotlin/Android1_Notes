@@ -1,23 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- это макет для альбомной ориентации -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:shrinkColumns="0">
 
-    <!-- Фрагмент с выбором заметок -->
-    <fragment android:name="com.android1.android1_notes.NotesFragment"
-        android:id="@+id/notes"
-        android:layout_weight="1"
-        android:layout_width="0px"
-        android:layout_height="match_parent" />
+    <!--  Меню для главной страницы (со списком заметок). Ландшафтная ор-ция  -->
+    <include layout="@layout/main_menu" />
 
-    <!-- Здесь будет открыта выбранная заметка -->
-    <FrameLayout
-        android:id="@+id/coat_of_note"
-        android:layout_width="0px"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="?android:attr/detailsElementBackground"/>
+    <!-- Макет для альбомной ориентации -->
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+            <!-- это макет для альбомной ориентации -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false">
+                <!-- Фрагмент с выбором заметок -->
+                <fragment android:name="com.android1.android1_notes.NotesFragment"
+                    android:id="@+id/notes"
+                    android:layout_weight="1"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent" />
+                <!-- Здесь будет открыта выбранная заметка -->
+                <FrameLayout
+                    android:id="@+id/coat_of_note"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="?android:attr/detailsElementBackground"/>
+            </LinearLayout>
+    </ScrollView>
 
-</LinearLayout>
+</TableLayout>

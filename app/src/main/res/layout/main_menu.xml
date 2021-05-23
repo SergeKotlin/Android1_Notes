@@ -1,0 +1,20 @@
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="end">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/noteMenu">
+        <Button
+            android:id="@+id/buttonSearchNote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/noteMenu"
+            android:text="@string/btnSearchNote" />
+        <Button
+            android:id="@+id/buttonAddNewNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/noteMenu"
+            android:text="@string/btnAddNewNote" />
+    </LinearLayout>
+</TableRow>

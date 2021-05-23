@@ -11,6 +11,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
 
 public class CoatOfNoteFragment extends Fragment {
+// Это код для фрагмента заметки fragment_coat_of_note.xml
 
     public static final String ARG_NOTE = "note";
     private Note note;
