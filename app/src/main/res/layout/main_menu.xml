@@ -4,17 +4,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/noteMenu">
-        <Button
+        <ImageButton
             android:id="@+id/buttonSearchNote"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/noteMenu"
-            android:text="@string/btnSearchNote" />
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:src="@android:drawable/ic_menu_search"
+            android:text="@string/btnSearchNote"/>
         <Button
             android:id="@+id/buttonAddNewNote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/noteMenu"
             android:text="@string/btnAddNewNote" />
+        <Button
+            android:id="@+id/buttonSortNotes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/noteMenu"
+            android:text="@string/btnSortNotes" />
     </LinearLayout>
 </TableRow>

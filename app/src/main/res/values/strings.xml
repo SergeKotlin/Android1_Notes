@@ -9,4 +9,5 @@
     <string name="mainMenuActionsBar">Actions</string>
     <string name="btnSearchNote">Search</string>
     <string name="btnAddNewNote">Add note</string>
+    <string name="btnSortNotes">Sort</string>
 </resources>
