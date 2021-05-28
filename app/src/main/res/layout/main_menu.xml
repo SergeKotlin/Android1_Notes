@@ -8,22 +8,23 @@
             android:id="@+id/buttonSearchNote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/btnSearchNote"
             style="@style/noteMenu"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:src="@android:drawable/ic_menu_search"
-            android:text="@string/btnSearchNote"/>
-        <Button
+            android:src="@android:drawable/ic_menu_search" />
+        <ImageButton
             android:id="@+id/buttonAddNewNote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/btnAddNewNote"
             style="@style/noteMenu"
-            android:text="@string/btnAddNewNote" />
-        <Button
+            android:src="@android:drawable/ic_menu_add" />
+        <!--        -->
+        <ImageButton
             android:id="@+id/buttonSortNotes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/btnSortNotes"
             style="@style/noteMenu"
-            android:text="@string/btnSortNotes" />
+            android:src="@android:drawable/ic_menu_sort_alphabetically" />
     </LinearLayout>
 </TableRow>

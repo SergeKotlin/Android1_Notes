@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,12 @@ public class NotesFragment extends Fragment {
         initList(view);
     }
 
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        requireActivity().getMenuInflater().inflate(R.menu.context_menu, menu);
+    }
+
     // создаём список городов на экране из массива в ресурсах
     private void initList(View view) {
         LinearLayout layoutView = (LinearLayout)view;
@@ -69,6 +76,7 @@ public class NotesFragment extends Fragment {
                     showCoatOfNote(currentNote);
                 }
             });
+            registerForContextMenu(tv); // Для контекстного меню регистрируем таргет
         }
     }
 
