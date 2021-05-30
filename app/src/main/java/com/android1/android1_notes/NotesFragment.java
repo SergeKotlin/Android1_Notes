@@ -45,7 +45,7 @@ public class NotesFragment extends Fragment {
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        requireActivity().getMenuInflater().inflate(R.menu.context_menu, menu);
+        requireActivity().getMenuInflater().inflate(R.menu.context_menu_main_page, menu);
     }
 
     // создаём список городов на экране из массива в ресурсах
@@ -156,7 +156,11 @@ public class NotesFragment extends Fragment {
         intent.setClass(getActivity(), CoatOfNoteActivity.class);
         // и передадим туда параметры
         intent.putExtra(CoatOfNoteFragment.ARG_NOTE, currentNote);
-        startActivity(intent);
+        startActivity(intent); //TODO ЭТО ЧТО ТАКОЕ? АЙ-Я-ЯЙ! БЕЗ НОВЫХ АКТИВИТИ. ФРАГМЕНТИ В СТАРУЮ.
+        //TODO (НАЛИЧИЕ ТОГО ЖЕ МЕНЮ ПРИЛОЖЕНИЯ В НОВОМ ОКНЕ - ХОРОШАЯ ПОДСКАЗКА/ПАЛЕВО)))
+
+        //TODO Кажется, задача проста - у нас есть фрагмент и новая активити, куда кидаю его.
+        //TODO Т.о. активити сношу, а фрагмент реплейсю в первую и единственную активити.
     }
 
 }

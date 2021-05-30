@@ -1,0 +1,49 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="end"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    style="@style/noteMenu">
+    <ImageButton
+        android:id="@+id/buttonSearchNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/noteMenu"
+        android:contentDescription="@string/btnSearchNote"
+        android:src="@android:drawable/ic_menu_search" />
+    <ImageButton
+        android:id="@+id/buttonMoreActionsNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/noteMenu"
+        android:contentDescription="@string/btnMoreDetailsNote"
+        android:src="@android:drawable/ic_menu_more" />
+    <ImageButton
+        android:id="@+id/buttonShareNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/noteMenu"
+        android:contentDescription="@string/btnShareNote"
+        android:src="@android:drawable/ic_menu_share" />
+    <ImageButton
+        android:id="@+id/buttonExportToFile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/noteMenu"
+        android:contentDescription="@string/btnExportToFile"
+        android:src="@android:drawable/ic_menu_save" />
+    <ImageButton
+        android:id="@+id/buttonCompassNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/noteMenu"
+        android:contentDescription="@string/btnLabelAndPinToTopNote"
+        android:src="@android:drawable/ic_menu_compass" />
+    <ImageButton
+        android:id="@+id/buttonInfoNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/noteMenu"
+        android:contentDescription="@string/btnInfoNote"
+        android:src="@android:drawable/ic_menu_info_details" />
+</LinearLayout>

@@ -6,8 +6,14 @@
     <string name="default_is_first_note_text">Text Notes</string>
     <string name="btnShareNote">Share</string>
     <string name="btnExportToFile">Save as..</string>
-    <string name="mainMenuActionsBar">Actions</string>
     <string name="btnSearchNote">Search</string>
-    <string name="btnAddNewNote">Add note</string>
+    <string name="btnAddNewNote">New note</string>
     <string name="btnSortNotes">Sort</string>
+    <string name="btnCopyNote">Copy</string>
+    <string name="btnLabelAndPinToTopNote"><![CDATA[Label & Pin to Top]]></string>
+    <string name="btnInfoNote">Info</string>
+    <string name="btnMoreDetailsNote">More Actions</string>
+    <string name="btnListViewChoiceMainMenu">View choice (Notes List)</string>
+    <string name="btnGlobalNotesSearch">Search</string>
+    <string name="btnMoreMainMenu">More</string>
 </resources>

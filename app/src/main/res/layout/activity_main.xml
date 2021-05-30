@@ -6,7 +6,7 @@
     android:shrinkColumns="0">
 
     <!--  Меню для главной страницы (со списком заметок). Портретная ор-ция  -->
-    <include layout="@layout/main_menu" />
+    <include layout="@layout/notes_list_menu" />
 
     <ScrollView
         android:layout_width="fill_parent"
