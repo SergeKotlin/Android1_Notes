@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:shrinkColumns="0">
 
-    <!--  Меню для главной страницы (со списком заметок). Портретная ор-ция  -->
-    <include layout="@layout/notes_list_menu" />
-
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        tools:ignore="UselessParent">
         <!-- это макет для портретной ориентации -->
         <!-- в портретной ориентации у activity одновременно только
         один фрагмент (либо список, либо заметка) -->
@@ -25,4 +23,4 @@
         </FrameLayout>
     </ScrollView>
 
-</TableLayout>
+</LinearLayout>

@@ -1,5 +1,7 @@
 package com.android1.android1_notes;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -8,11 +10,14 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -32,7 +37,9 @@ public class NotesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_notes, container, false);
+        View view = inflater.inflate(R.layout.fragment_notes, container, false);
+        initPopupMenu(view);
+        return view;
     }
 
     // вызывается после создания макета фрагмента, здесь мы проинициализируем список
@@ -46,6 +53,74 @@ public class NotesFragment extends Fragment {
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         requireActivity().getMenuInflater().inflate(R.menu.context_menu_main_page, menu);
+    }
+
+    private void initPopupMenu(View view) {
+        searchPopupMenu(view);
+        addPopupMenu(view);
+        sortPopupMenu(view);
+    }
+
+    private void searchPopupMenu(View view) {
+        ImageButton btnSearch = view.findViewById(R.id.buttonSearchNote);
+        btnSearch.setOnClickListener(v -> {
+            Activity activity = requireActivity();
+            PopupMenu popupMenu = new PopupMenu(activity, v);
+            activity.getMenuInflater().inflate(R.menu.popup_search_notes_list, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(item -> {
+                Toast.makeText(getContext(), "Поиск", Toast.LENGTH_SHORT)
+                        .show();
+                return true;
+            });
+            popupMenu.show();
+        });
+    }
+
+    private void addPopupMenu(View view) {
+        ImageButton btnSearch = view.findViewById(R.id.buttonAddNewNote);
+        btnSearch.setOnClickListener(v -> {
+            Activity activity = requireActivity();
+            PopupMenu popupMenu = new PopupMenu(activity, v);
+            activity.getMenuInflater().inflate(R.menu.popup_add_notes_list, popupMenu.getMenu());
+//            menu.findItem(R.id.item2_popup).setVisible(false);
+//            menu.add(0, 123456, 12, R.string.new_menu_item_added);
+//            menu.add(0, 123456, 30, R.string.new_menu_item_added);
+            popupMenu.setOnMenuItemClickListener(item -> {
+                Toast.makeText(getContext(), "Новая заметка", Toast.LENGTH_SHORT)
+                        .show();
+                return true;
+            });
+            popupMenu.show();
+        });
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    private void sortPopupMenu(View view) {
+        ImageButton btnSearch = view.findViewById(R.id.buttonSortNotes);
+        btnSearch.setOnClickListener(v -> {
+            Activity activity = requireActivity();
+            PopupMenu popupMenu = new PopupMenu(activity, v);
+            activity.getMenuInflater().inflate(R.menu.popup_sort_notes_list, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(item -> {
+                int id = item.getItemId();
+                switch (id) {
+                    case R.id.sort_by_name_ascending__popup_notes_list:
+                        Toast.makeText(getContext(), "Алфавитная сортировка - по возрастанию", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.sort_by_name_descending__popup_notes_list:
+                        Toast.makeText(getContext(), "Алфавитная сортировка - по убыванию", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.sort_by_date_ascending__popup_notes_list:
+                        Toast.makeText(getContext(), "Временная сортировка - по возрастанию", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.sort_by_date_descending__popup_notes_list:
+                        Toast.makeText(getContext(), "Временная сортировка - по возрастанию", Toast.LENGTH_SHORT).show();
+                        return true;
+                }
+                return true;
+            });
+            popupMenu.show();
+        });
     }
 
     // создаём список городов на экране из массива в ресурсах

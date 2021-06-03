@@ -3,15 +3,21 @@ package com.android1.android1_notes;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
 
 public class CoatOfNoteFragment extends Fragment {
-// Это код для фрагмента заметки fragment_coat_of_note.xml
+// Это код для фрагмента заметки заметки fragment_coat_of_note.xml
+// TODO Фрагмент то есть - да сетим в новую активити.. Исправить для п-па «Single Activity»
 
     public static final String ARG_NOTE = "note";
     private Note note;
@@ -53,6 +59,23 @@ public class CoatOfNoteFragment extends Fragment {
         TextView noteNameView = view.findViewById(R.id.nameNotes);
         noteNameView.setText(notes_names.getText(note.getNoteIndex()));
 
+        setHasOptionsMenu(true); // Подключение меню для фрагмента
+
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.note_section_main_menu, menu);
+        // Default: super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.note_section__main_menu) {
+            Toast.makeText(getContext(), "Секция меню заметки", Toast.LENGTH_LONG)
+                    .show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

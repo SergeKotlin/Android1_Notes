@@ -17,3 +17,4 @@
     android:id="@+id/rename__context_menu_main"
     android:orderInCategory="40"/>
 </menu>
+<!-- TODO Запрогать с тостами это меню -->

@@ -21,6 +21,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        toSearching(menu);
+        return true; // false - руль фрагменту, true - рулим здесь
+    }
+
+    private void toSearching(Menu menu) {
         MenuItem search = menu.findItem(R.id.search__main_menu);
         SearchView searchText = (SearchView) search.getActionView(); // строка поиска
         searchText.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -43,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        return true; // false - руль фрагменту, true - рулим здесь
     }
 
     // Обработаем нажатия пунктов меню:
@@ -88,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
 // размер занятой памяти.. и объём заметок приложением, корзина(архив), резервные стеки и их размер/объём.
 
 
+// https://gb.ru/lessons/117302
 // (Оригинальное задание:)
 /* ✓1. Подумайте о функционале вашего приложения заметок. Какие экраны там могут быть, помимо основного со списком заметок?
    ✓ Как можно использовать меню и всплывающее меню в вашем приложении?

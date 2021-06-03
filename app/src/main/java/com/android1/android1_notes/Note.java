@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Note implements Parcelable {
+// Класс Заметки. Какие ещё пояснения нужны?
     private int noteIndex;
     private String noteName;
 
