@@ -5,8 +5,8 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-// Эта activity для открытия заметки в портретной ориентации
 public class CoatOfNoteActivity extends AppCompatActivity {
+// Эта activity для открытия заметки в портретной ориентации - //TODO на удаление. Д.б. фрагменты и 1 активити
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

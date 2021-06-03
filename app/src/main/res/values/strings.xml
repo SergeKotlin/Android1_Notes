@@ -1,12 +1,11 @@
 <resources>
     <string name="app_name">Android1_Notes</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="default_is_first_note_name">Name Notes</string>
     <string name="default_is_first_note_text">Text Notes</string>
     <string name="btnShareNote">Share</string>
     <string name="btnExportToFile">Save as..</string>
-    <string name="btnSearchNote">Search</string>
+    <string name="btnSearchNote">Search (Global)</string>
     <string name="btnAddNewNote">New note</string>
     <string name="btnSortNotes">Sort</string>
     <string name="btnCopyNote">Copy</string>
@@ -14,6 +13,13 @@
     <string name="btnInfoNote">Info</string>
     <string name="btnMoreDetailsNote">More Actions</string>
     <string name="btnListViewChoiceMainMenu">View choice (Notes List)</string>
-    <string name="btnGlobalNotesSearch">Search</string>
+    <string name="btnGlobalNotesSearch">Search (Global)</string>
     <string name="btnMoreMainMenu">More</string>
+    <string name="note_menu_section">Note Menu Section</string>
+    <string name="sort_by_name__popup_notes_list">Sort by Name</string>
+    <string name="sort_by_date__popup_notes_list">Sort by Date</string>
+    <string name="sort_ascending__popup_notes_list">Ascending sort</string>
+    <string name="sort_descending__popup_notes_list">Descending sort</string>
+    <string name="search__popup_notes_list">Search (Global)</string>
+    <string name="add_note__popup_notes_list">Add a Note</string>
 </resources>

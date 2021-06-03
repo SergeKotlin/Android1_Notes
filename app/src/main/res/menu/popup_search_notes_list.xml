@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orderInCategory="10">
+    <item android:title="@string/search__popup_notes_list"
+        android:id="@+id/search__popup_notes_list" />
+</menu>

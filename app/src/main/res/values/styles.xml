@@ -4,4 +4,7 @@
         <item name="android:textSize">12sp</item>
         <item name="android:layout_gravity">end</item>
     </style>
+    <style name="notesMenu" parent="noteMenu">
+        <item name="android:background">@color/design_default_color_on_primary</item>
+    </style>
 </resources>
