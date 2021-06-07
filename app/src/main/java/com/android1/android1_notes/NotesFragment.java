@@ -52,7 +52,7 @@ public class NotesFragment extends Fragment {
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        requireActivity().getMenuInflater().inflate(R.menu.context_menu_main_page, menu);
+        requireActivity().getMenuInflater().inflate(R.menu.context_menu__notes_list, menu);
     }
 
     private void initPopupMenu(View view) {
@@ -66,7 +66,7 @@ public class NotesFragment extends Fragment {
         btnSearch.setOnClickListener(v -> {
             Activity activity = requireActivity();
             PopupMenu popupMenu = new PopupMenu(activity, v);
-            activity.getMenuInflater().inflate(R.menu.popup_search_notes_list, popupMenu.getMenu());
+            activity.getMenuInflater().inflate(R.menu.popup_search__notes_list, popupMenu.getMenu());
             popupMenu.setOnMenuItemClickListener(item -> {
                 Toast.makeText(getContext(), "Поиск", Toast.LENGTH_SHORT)
                         .show();
@@ -81,7 +81,8 @@ public class NotesFragment extends Fragment {
         btnSearch.setOnClickListener(v -> {
             Activity activity = requireActivity();
             PopupMenu popupMenu = new PopupMenu(activity, v);
-            activity.getMenuInflater().inflate(R.menu.popup_add_notes_list, popupMenu.getMenu());
+            activity.getMenuInflater().inflate(R.menu.popup_add__notes_list, popupMenu.getMenu());
+    // Шаблоны для будущей разработки действий, создания новой заметки..:
 //            menu.findItem(R.id.item2_popup).setVisible(false);
 //            menu.add(0, 123456, 12, R.string.new_menu_item_added);
 //            menu.add(0, 123456, 30, R.string.new_menu_item_added);
@@ -100,7 +101,7 @@ public class NotesFragment extends Fragment {
         btnSearch.setOnClickListener(v -> {
             Activity activity = requireActivity();
             PopupMenu popupMenu = new PopupMenu(activity, v);
-            activity.getMenuInflater().inflate(R.menu.popup_sort_notes_list, popupMenu.getMenu());
+            activity.getMenuInflater().inflate(R.menu.popup_sort__notes_list, popupMenu.getMenu());
             popupMenu.setOnMenuItemClickListener(item -> {
                 int id = item.getItemId();
                 switch (id) {
@@ -236,6 +237,15 @@ public class NotesFragment extends Fragment {
 
         //TODO Кажется, задача проста - у нас есть фрагмент и новая активити, куда кидаю его.
         //TODO Т.о. активити сношу, а фрагмент реплейсю в первую и единственную активити.
+        /*// Создаём новый фрагмент с текущей позицией для открытия заметки
+        CoatOfNoteFragment detail = CoatOfNoteFragment.newInstance(currentNote);
+
+        // Выполняем транзакцию по замене фрагмента
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.notes, detail);  // замена фрагмента
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.commit();*/
     }
 
 }

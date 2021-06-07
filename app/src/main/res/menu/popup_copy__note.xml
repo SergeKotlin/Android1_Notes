@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--    Label & Pin to Top -->
+    <item android:title="@string/copy_note__popup_note"
+        android:icon="@drawable/perm_group_bookmarks"
+        android:id="@+id/copy_note__popup_note"
+        android:orderInCategory="10" />
+</menu>
