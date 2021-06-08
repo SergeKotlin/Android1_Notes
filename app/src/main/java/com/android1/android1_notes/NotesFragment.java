@@ -38,6 +38,8 @@ public class NotesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notes, container, false);
+        /* Что же это получается.. в name во fragment (activity_main.xml) мы указываем, где программируем участок верстки - NotesFragment.
+        А в NotesFragment указываем участок вёрстки, который ещё сюда вставляем. (И как это надо догадываться и наводить мосты?) */
         initPopupMenu(view);
         return view;
     }
@@ -115,7 +117,7 @@ public class NotesFragment extends Fragment {
                         Toast.makeText(getContext(), "Временная сортировка - по возрастанию", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.sort_by_date_descending__popup_notes_list:
-                        Toast.makeText(getContext(), "Временная сортировка - по возрастанию", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Временная сортировка - по убыванию", Toast.LENGTH_SHORT).show();
                         return true;
                 }
                 return true;
@@ -141,9 +143,11 @@ public class NotesFragment extends Fragment {
 
             setNoteColor(tv);
 
-            // не востребовано. Как пример конструкции просто  tv.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
-            // и это tv.setScrollY(0);
+            // не востребовано. Просто пример конструкции: tv.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
+            // не востребовано. Пример настройки скрола: tv.setScrollY(0);
+
             layoutView.addView(tv);
+
             final int fi = i; // не можем внутрь анонимного класса передать не final - иначе гонка потоков
             tv.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -152,6 +156,7 @@ public class NotesFragment extends Fragment {
                     showCoatOfNote(currentNote);
                 }
             });
+
             registerForContextMenu(tv); // Для контекстного меню регистрируем таргет
         }
     }
@@ -221,6 +226,8 @@ public class NotesFragment extends Fragment {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.coat_of_note, detail);  // замена фрагмента
+        // fragmentTransaction.add(R.id.notes, detail); // TODO сделать мульти-оконное открытие заметок (опционально, по выбору).
+        // TODO Такого не видел у конкурентов. P.s. в некоторых ситуациях - определенно удобная штука.
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
     }
@@ -232,18 +239,20 @@ public class NotesFragment extends Fragment {
         intent.setClass(getActivity(), CoatOfNoteActivity.class);
         // и передадим туда параметры
         intent.putExtra(CoatOfNoteFragment.ARG_NOTE, currentNote);
-        startActivity(intent); //TODO ЭТО ЧТО ТАКОЕ? АЙ-Я-ЯЙ! БЕЗ НОВЫХ АКТИВИТИ. ФРАГМЕНТИ В СТАРУЮ.
+        startActivity(intent); // TODO БЕЗ НОВЫХ АКТИВИТИ. ФРАГМЕНТ В СТАРУЮ.
         //TODO (НАЛИЧИЕ ТОГО ЖЕ МЕНЮ ПРИЛОЖЕНИЯ В НОВОМ ОКНЕ - ХОРОШАЯ ПОДСКАЗКА/ПАЛЕВО)))
 
         //TODO Кажется, задача проста - у нас есть фрагмент и новая активити, куда кидаю его.
-        //TODO Т.о. активити сношу, а фрагмент реплейсю в первую и единственную активити.
-        /*// Создаём новый фрагмент с текущей позицией для открытия заметки
-        CoatOfNoteFragment detail = CoatOfNoteFragment.newInstance(currentNote);
+        // Т.о. активити сношу, а фрагмент реплейсю в первую и единственную активити.
+        //TODO Upgrade: Проще было предположить, чем сделать. Всё устроено с первого урока не по пути задаче.
+        // Проще всё с 0 делать под одну активити, чем перелапачивать имеющееся (*). Main страница наполняется наполовину программно, и не replace'ится.
+        // Потрачено, я бы сказал убито ни за что - пол дня и больше. Подход гаданий мне не нравится. Так что решение одно *.
+        // Компромисс - оставить как есть, но опционально replace'ить найденным способом, под списком, как выходит =)
 
-        // Выполняем транзакцию по замене фрагмента
+        /*CoatOfNoteFragment detail = CoatOfNoteFragment.newInstance(currentNote);
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.notes, detail);  // замена фрагмента
+        fragmentTransaction.add(R.id.coat_for_NotesFragment, detail);  // сделать мульти-оконное открытие заметок (опционально, по выбору). Такого не видел у конкурентов. P.s. в некоторых ситуациях - определенно удобная штука.
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();*/
     }

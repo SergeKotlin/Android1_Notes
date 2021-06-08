@@ -11,7 +11,7 @@ public class CoatOfNoteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_coat_of_note);
+        setContentView(R.layout.__activity_coat_of_note);
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             // Если устройство перевернули в альбомную ориентацию, то надо эту activity закрыть

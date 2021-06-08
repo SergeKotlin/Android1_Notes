@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:shrinkColumns="0">
 
+    <!-- Макет для портретной ориентации -->
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         tools:ignore="UselessParent">
-        <!-- это макет для портретной ориентации -->
-        <!-- в портретной ориентации у activity одновременно только
+        <!-- В портретной ориентации у activity одновременно только
         один фрагмент (либо список, либо заметка) -->
         <FrameLayout
             android:layout_width="match_parent"
@@ -20,6 +20,8 @@
                 android:name="com.android1.android1_notes.NotesFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+                <!-- Что же это получается.. в name во fragment мы указываем, где программируем участок верстки - NotesFragment.
+                 А в NotesFragment указываем участок вёрстки, который ещё сюда вставляем. (И как это надо догадываться и наводить мосты?) -->
         </FrameLayout>
     </ScrollView>
 
