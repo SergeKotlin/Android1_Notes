@@ -16,6 +16,9 @@
     <string name="item1">item 1</string>
     <string name="item2">item 2</string>
     <string name="new_menu_item_added">Menu item added</string>
+    <string name="fragment_navigation">Fragment Navigation</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
