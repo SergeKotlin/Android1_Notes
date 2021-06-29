@@ -3,6 +3,7 @@ package com.android1.android1_notes;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -55,6 +56,8 @@ public class MainFragment extends Fragment {
             });
             popupMenu.show();
         });
+        registerForContextMenu(text);
+
     }
 
     @Override
@@ -69,5 +72,30 @@ public class MainFragment extends Fragment {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        requireActivity().getMenuInflater().inflate(R.menu.context, menu);
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.add_context_main) {
+            Toast.makeText(getContext(), "Chosen context add", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.add_context_main:
+                Toast.makeText(getContext(), "Chosen context add", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.search_context_main:
+                Toast.makeText(getContext(), "Chosen context search", Toast.LENGTH_SHORT).show();
+                return true;
+        }
+        return super.onContextItemSelected(item);
     }
 }
