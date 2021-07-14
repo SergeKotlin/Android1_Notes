@@ -1,28 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:shrinkColumns="0">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
 
-    <!-- Макет для портретной ориентации -->
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        tools:ignore="UselessParent">
-        <!-- В портретной ориентации у activity одновременно только
-        один фрагмент (либо список, либо заметка) -->
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <fragment
-                android:id="@+id/notes"
-                android:name="com.android1.android1_notes.NotesFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-                <!-- Что же это получается.. в name во fragment мы указываем, где программируем участок верстки - NotesFragment.
-                 А в NotesFragment указываем участок вёрстки, который ещё сюда вставляем. (И как это надо догадываться и наводить мосты?) -->
-        </FrameLayout>
-    </ScrollView>
+    <include
+        layout="@layout/app_bar_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-</LinearLayout>
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_main"
+        app:menu="@menu/drawer_menu" />
+
+</androidx.drawerlayout.widget.DrawerLayout>
