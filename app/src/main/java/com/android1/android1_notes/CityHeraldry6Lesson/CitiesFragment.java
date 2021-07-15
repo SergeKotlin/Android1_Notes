@@ -60,19 +60,24 @@ public class CitiesFragment extends Fragment {
 
     // создаём список городов на экране из массива в ресурсах
     private void initList(View view) {
-        LinearLayout layoutView = (LinearLayout)view;
+        LinearLayout layoutView = (LinearLayout) view;
         String[] cities = getResources().getStringArray(R.array.cities);
 
-        // В этом цикле создаём элемент TextView,
-        // заполняем его значениями,
-        // и добавляем на экран.
-        // Кроме того, создаём обработку касания на элемент
+        LayoutInflater layoutInflater = getLayoutInflater(); // При помощи этого объекта будем доставать элементы, спрятанные в item.xml
+
         for(int i=0; i < cities.length; i++){
             String city = cities[i];
-            TextView tv = new TextView(getContext());
+
+            View item = layoutInflater.inflate(R.layout.item, layoutView, false); // Достаём элемент из item.xml
+            TextView tv = item.findViewById(R.id.textView); // Находим в этом элементе TextView
+            tv.setText(city);
+            layoutView.addView(item);
+
+            /*TextView tv = new TextView(getContext()); // В этом цикле создаём элемент TextView, заполняем значениями и добавляем на экран.
             tv.setText(city);
             tv.setTextSize(30);
-            layoutView.addView(tv);
+            layoutView.addView(tv);*/
+
             final int fi = i; // не можем внутрь анонимного класса передать не final - иначе гонка потоков
             tv.setOnClickListener(v -> {
 //                    currentPosition = fi;
