@@ -4,11 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -205,6 +208,45 @@ public class MainActivity extends AppCompatActivity {
                 text, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.END, 0, 0);
         toast.show();
+    }
+
+    //TODO Перенести ContextMenu во Фрагмент. С новой логикой, не получилось. Хз, как объявить во фрагменте через ViewHolder
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.context_main, menu);
+    }
+
+    @Override @SuppressLint("NonConstantResourceId")
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.copy_note__context_main:
+                toastOnOptionsItemSelected("Заметка скопирована");
+                return true;
+            case R.id.share_note__context_main:
+                toastOnOptionsItemSelected("Заметка передана / Открыта через..");
+                return true;
+            case R.id.new_label__context_main:
+                toastOnOptionsItemSelected("Добавлена новая метка");
+                return true;
+            case R.id.pin_to_top__context_main:
+                toastOnOptionsItemSelected("Заметка закреплена");
+                return true;
+            case R.id.search__context_main:
+                toastOnOptionsItemSelected("Поиск в заметке");
+                return true;
+            case R.id.info__context_main:
+                toastOnOptionsItemSelected("Детали заметки");
+                return true;
+            case R.id.rename__context_main:
+                toastOnOptionsItemSelected("Заметка переименована");
+                return true;
+            case R.id.delete__context_main:
+                toastOnOptionsItemSelected("Заметка удалена");
+                return true;
+        }
+        return super.onContextItemSelected(item);
     }
 
 }
