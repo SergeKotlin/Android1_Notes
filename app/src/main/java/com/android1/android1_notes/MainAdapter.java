@@ -38,7 +38,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MainAdapter.ViewHolder viewHolder, int i) { // Вызывается менеджером, подгружает данные и заполняет представления
         // Получить элемент из источника данных (БД, интернет...) и вывести на экран
-//        viewHolder.getTextView().setText(dataSource[i]);
         viewHolder.setData(dataSource.getCardData(i));
         Log.d(TAG, "onBindViewHolder");
     }
@@ -61,7 +60,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     // Этот класс хранит связь между данными и элементами View (сложные данные могут потребовать несколько View на один пункт списка)
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        //        private TextView textView;
         private TextView name;
 
         public ViewHolder(@NonNull View itemView) {
@@ -71,13 +69,14 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             // Обработчик нажатий на этом ViewHolder
             name.setOnClickListener(v -> {
                 if (itemClickListener != null) {
-                    itemClickListener.onItemClick(v, getAdapterPosition()+1);
+                    itemClickListener.onItemClick(v, getAdapterPosition()+1); // Магическая +1, для приведения 0-го индекса массива к 1-ой позиции списка заметок
                 }
             });
 
-            ((MainActivity)itemView.getContext()).registerForContextMenu(name); // Регистрируем контекстное меню
+            ((MainActivity)itemView.getContext()).registerForContextMenu(name); // Регистрируем контекстное меню (вообще-то MainFragment, но получилось пока для Activity)
         }
 
+        // Формируем список городов
         public void setData(CardData cardData){
             name.setText(cardData.getName());
             name.setTextColor(Color.parseColor(cardData.getColor()));

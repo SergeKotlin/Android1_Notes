@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         addFragment(new MainFragment());
     };
 
+    //TODO !!! Меню Навигации работает с MainFragment устаревшим способом
     private void addFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager(); //Получить менеджер фрагментов
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction(); // Открыть транзакцию
@@ -124,13 +125,13 @@ public class MainActivity extends AppCompatActivity {
         }
         if (Settings.isBackStack){ // Добавить транзакцию в бэкстек
             fragmentTransaction.addToBackStack(null);
-                // Пояснение:
-                // внутри созданной fragmentTransaction происходят действия .replace(),
-                // которые можно отправить в стек обратного вызова с помощью .addToBackStack(null).
-                // Если указать имя, можно будет перепрыгивать сразу к именованной транзакции с
-                // определённым фрагментом fragmentManager.popBackStack(name, flags). Где flags - признак,
-                // будем ли включать именованную транзакцию. 0 - фрагмент с именованной транзакцией, 1 или
-                // POP_BACK_STACK_INCLUSIVE - предыдущее состояние относительно именованной транзакции.
+                /* Пояснение!:
+                Внутри созданной fragmentTransaction происходят действия .replace(),
+                которые можно отправить в стек обратного вызова с помощью .addToBackStack(null).
+                Если указать имя, можно будет перепрыгивать сразу к именованной транзакции с
+                определённым фрагментом fragmentManager.popBackStack(name, flags). Где flags - признак,
+                будем ли включать именованную транзакцию. 0 - фрагмент с именованной транзакцией, 1 или
+                POP_BACK_STACK_INCLUSIVE - предыдущее состояние относительно именованной транзакции.*/
         }
         fragmentTransaction.commit(); // Закрыть транзакцию
     }
@@ -251,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
 
 }
 
-//TODO#DEL_for_HW8 - почистить старый код по тэгу
+//TODO#DEL_for_HW8 - тэг для очистки оставшегося старого кода
 
 // Задание.
 /* ✓ 1. Создайте список ваших заметок.

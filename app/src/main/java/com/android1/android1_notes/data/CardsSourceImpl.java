@@ -24,7 +24,6 @@ public class CardsSourceImpl implements CardsSource {
         String[] noteNames = resources.getStringArray(R.array.notes_names); // названия из ресурсов
         String[] noteTexts = resources.getStringArray(R.array.notes); // тексты заметок из ресурсов
         String[] noteColors = initNotesColors(noteNames.length); // цвета заметок из ресурсов
-//        String[] noteColors = resources.getStringArray(R.array.notes_colors);
 
         for (int i = 0; i < noteNames.length; i++) { // заполнение источника данных
             dataSource.add(new CardData(noteNames[i], noteTexts[i], noteColors[i]));
@@ -32,6 +31,7 @@ public class CardsSourceImpl implements CardsSource {
         return this;
     }
 
+    //TODO #Is_not_important ИСКЛЮЧИТЬ ПОВТОР ЦВЕТОВ ДРУГ ЗА ДРУГОМ
     private String[] initNotesColors(int data_size) {
         String[] colors = resources.getStringArray(R.array.notes_colors);
         String note_color = "#EFD446"; // по умолчанию заметки жёлтые, R.color.yellow_note;
