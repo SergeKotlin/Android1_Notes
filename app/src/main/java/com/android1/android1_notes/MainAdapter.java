@@ -1,5 +1,6 @@
 package com.android1.android1_notes;
 
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,6 +80,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
         public void setData(CardData cardData){
             name.setText(cardData.getName());
+            name.setTextColor(Color.parseColor(cardData.getColor()));
         }
     }
 }
