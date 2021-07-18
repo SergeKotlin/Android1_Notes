@@ -21,6 +21,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.android1.android1_notes.data.CardData;
+import com.android1.android1_notes.data.CardsSource;
+import com.android1.android1_notes.data.CardsSourceImpl;
+import com.android1.android1_notes.data.Note;
 
 import java.util.Random;
 
@@ -30,16 +38,16 @@ public class MainFragment extends Fragment {
     private Note currentNote;    // Выбранная заметка
     private boolean isLandscape;
 
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//    }
+    @Override @Nullable
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
 
-    // Сохраним текущую позицию (вызывается перед выходом из фрагмента)
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelable(CURRENT_NOTE, currentNote);
-        super.onSaveInstanceState(outState);
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_notes_list);
+        CardsSource data = new CardsSourceImpl(getResources()).init(); // Получим источник данных для списка
+        initRecyclerView(recyclerView, data);
+
+        setHasOptionsMenu(true); // Регестрируем меню! Не забываем
+        return view;
     }
 
     //TODO Почему в этом фрагменте этот метод is deprecated, когда в другом всё нормально
@@ -66,19 +74,11 @@ public class MainFragment extends Fragment {
         // showNote(currentNote);
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
-        setHasOptionsMenu(true); // Регестрируем меню! Не забываем
-        return view;
-    }
-
     // Вызывается после создания макета фрагмента
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initList(view); // проинициализируем список заметок
+//        initList(view); // проинициализируем список заметок
     }
 
     // Создаём список городов на экране из массива в ресурсах
@@ -143,6 +143,13 @@ public class MainFragment extends Fragment {
         }
     }
 
+    // Сохраним текущую позицию (вызывается перед выходом из фрагмента)
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putParcelable(CURRENT_NOTE, currentNote);
+        super.onSaveInstanceState(outState);
+    }
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.main_menu, menu);
@@ -170,6 +177,7 @@ public class MainFragment extends Fragment {
         toast.show();
     }
 
+    //TODO#DEL_for_HW8 Перенести ContextMenu в Активити, т.к я хз, как объявить во фрагменте через ViewHolder
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -207,6 +215,59 @@ public class MainFragment extends Fragment {
                 return true;
         }
         return super.onContextItemSelected(item);
+    }
+
+    // RecyclerView - размещает элементы списка, через Менеджера, а также делает запросы к Адаптеру на получение этих данных. Т.о. командует адаптером
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private void initRecyclerView(RecyclerView recyclerView, CardsSource data){
+        recyclerView.setHasFixedSize(true); // Установка для повышения производительности системы (все эл-ты списка одинаковые по размеру, обработка ускорится)
+
+        // Работаем со встроенным менеджером
+        // Можно просто объявить менеджер в соотв-щем макете app:layoutManager="LinearLayoutManager" (ЕСЛИ менеджер стандартный)
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+//        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+        recyclerView.setLayoutManager(layoutManager);
+
+
+        MainAdapter adapter = new MainAdapter(data); // Установим адаптер
+        recyclerView.setAdapter(adapter);
+
+        //  Добавим разделитель карточек
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);
+        itemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator,null));
+        recyclerView.addItemDecoration(itemDecoration);
+
+        adapter.setOnItemClickListener((view, position) -> { // Установим слушателя
+            toastOnItemClickListener(position);
+            showNote(data.getCardData(position-1));
+        });
+    }
+
+    @SuppressLint("DefaultLocale")
+    private void toastOnItemClickListener(int position) {
+        Toast.makeText(getContext(), String.format("Позиция - %d", position), Toast.LENGTH_SHORT).show();
+    }
+
+    private void showNote(CardData data) {
+        CardFragment note = CardFragment.newInstance(data); // Создаём новый фрагмент с текущей позицией для открытия заметки
+//        NoteFragment detail = NoteFragment.newInstance(currentNote);
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager(); // Выполняем транзакцию по замене фрагмента
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.addToBackStack(null); // Перед показом заметки закинем лист заметок, с которого переходим, в БэкСтэк
+        replacingFragment(note, fragmentTransaction);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.commit();
+    }
+
+    private void replacingFragment(CardFragment detail, FragmentTransaction fragmentTransaction) {
+        isLandscape = getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE;
+        // Замена фрагмента
+        if (isLandscape) {
+            fragmentTransaction.replace(R.id.note_container, detail);
+        } else {
+            fragmentTransaction.replace(R.id.fragment_container, detail);
+        }
     }
 
 }

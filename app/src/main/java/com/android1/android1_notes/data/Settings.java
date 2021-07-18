@@ -1,4 +1,4 @@
-package com.android1.android1_notes;
+package com.android1.android1_notes.data;
 
 public class Settings {
 

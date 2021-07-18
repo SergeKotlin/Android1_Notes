@@ -20,6 +20,8 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 
+import com.android1.android1_notes.data.Note;
+
 public class NoteFragment extends Fragment {
 
     public static final String ARG_NOTE = "note";
@@ -42,8 +44,7 @@ public class NoteFragment extends Fragment {
         }
     }
 
-    @Override
-    @SuppressLint("Recycle")
+    @Override @SuppressLint("Recycle")
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = showNote(inflater, container);
         setHasOptionsMenu(true); // Регестрируем меню! Не забываем

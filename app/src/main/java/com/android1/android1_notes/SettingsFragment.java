@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
+import com.android1.android1_notes.data.Settings;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class SettingsFragment extends Fragment {
