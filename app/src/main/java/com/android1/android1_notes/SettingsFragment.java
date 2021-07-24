@@ -60,10 +60,10 @@ public class SettingsFragment extends Fragment {
         });
     }
 
-//    private void setTheme() {
-//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-//        getActivity().recreate();
-//    }
+    /*private void setTheme() {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        getActivity().recreate();
+    }*/
 
     // Сохранение настроек приложения
     private void writeSettings(){

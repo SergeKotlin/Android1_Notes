@@ -24,7 +24,14 @@ import com.android1.android1_notes.data.CardsSourceImpl;
 
 public class MainFragment extends Fragment {
 
+    public static final String CURRENT_NOTE = "CurrentNote";
+    private static CardData note;
+
     private boolean isLandscape;
+
+    public static MainFragment newInstance() {
+        return new MainFragment();
+    }
 
     @Override @Nullable
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,39 +49,32 @@ public class MainFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //TODO Этот участок содержит исключение на случай отсутствия заметки, следует учесть и в новой логике с CardViews
-        /*// Определение, можно ли будет открыть рядом заметку в другом фрагменте
-        isLandscape = getResources().getConfiguration().orientation
+
+        isLandscape = getResources().getConfiguration().orientation // Для определение, можно ли открыть рядом заметку в другом фрагменте
                 == Configuration.ORIENTATION_LANDSCAPE;
 
         // Если это не первое создание, то восстановим текущую позицию
         if (savedInstanceState != null) {
-            // Восстановление текущей позиции.
-            currentNote = savedInstanceState.getParcelable(CURRENT_NOTE);
-        } else {
+            note = savedInstanceState.getParcelable(CURRENT_NOTE); // Восстановление текущей позиции
+            showNote(note);
+        }
+        // Участок ниже содержал исключение на случай отсутствия заметки, мы учли его showNote проверкой data на null
+        /*else { //TODO to_Delete
             // Если восстановить не удалось, можно показать объект с первым индексом
-            currentNote = new Note(0, getResources().getStringArray(R.array.notes)[0]);
+            note = new CardData(getResources().getStringArray(R.array.notes_names)[0], getResources().getStringArray(R.array.notes)[0], getResources().getStringArray(R.array.notes_colors)[2]);
         }*/
-
-        //TODO Не работает. Не получается организовать верную передачу и обработку заметки между ориентациями
-
-        // Если можно показать текст заметки рядом, сделаем это. Первое отображение
-        // showNote(currentNote);
     }
 
-    //TODO #to_Delete Помечаю на удаление. Кажется, больше не использую
-    /*// Вызывается после создания макета фрагмента
+    /*// Вызывается после создания макета фрагмента //TODO #to_Delete Помечаю на удаление. Кажется, больше не использую
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 //        initList(view); // проинициализируем список заметок
     }*/
 
-    // Сохраним текущую позицию (вызывается перед выходом из фрагмента)
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        //TODO Всё ещё содержит старую ошибку поворота экрана, жду Марию для HW7
-//        outState.putParcelable(CURRENT_NOTE, currentNote);
+    public void onSaveInstanceState(@NonNull Bundle outState) { // Сохраним текущую позицию (вызывается перед выходом из фрагмента)
+        outState.putParcelable(CURRENT_NOTE, note);
         super.onSaveInstanceState(outState);
     }
 
@@ -105,18 +105,20 @@ public class MainFragment extends Fragment {
     }
 
     private void showNote(CardData data) {
-        CardFragment note = CardFragment.newInstance(data); // Создаём новый фрагмент с текущей позицией для открытия заметки
-        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager(); //Получить менеджер фрагментов
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction(); // Открываем транзакцию по замене фрагмента
-        fragmentTransaction.addToBackStack(null); // Перед показом заметки закинем лист заметок, с которого переходим, в БэкСтэк
-        replacingFragment(note, fragmentTransaction);
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        fragmentTransaction.commit();
+        if (data != null) {
+            note = data; // для savedInstanceState (showNote вызывается из разных мест)
+            CardFragment note = CardFragment.newInstance(data); // Создаём новый фрагмент с текущей позицией для открытия заметки
+            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager(); //Получить менеджер фрагментов
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction(); // Открываем транзакцию по замене фрагмента
+            fragmentTransaction.addToBackStack(null); // Перед показом заметки закинем лист заметок, с которого переходим, в БэкСтэк
+//            fragmentTransaction.addToBackStack("NotesList");
+            replacingFragment(note, fragmentTransaction);
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            fragmentTransaction.commit();
+        }
     }
 
     private void replacingFragment(CardFragment detail, FragmentTransaction fragmentTransaction) {
-        isLandscape = getResources().getConfiguration().orientation
-                == Configuration.ORIENTATION_LANDSCAPE;
         // Замена фрагмента. Если можно показать текст заметки рядом, сделаем это
         if (isLandscape) {
             fragmentTransaction.replace(R.id.note_container, detail);

@@ -29,6 +29,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    /* Возможен Upgrade для popBackStack(name, flags) к определённому состоянию
+    private static final String FRAGMENT_NOTES_LIST_TAG = "NotesList";
+    private static final String FRAGMENT_NOTE_TAG = "Note"; */
     private boolean isLandscape;
 
     @Override
@@ -37,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         readSettings();
         initView();
-        inflateListNotes(); // Наполняем список заметок
+        inflateListNotes(MainFragment.newInstance()); // Наполняем список заметок
     }
 
     private void readSettings(){
@@ -80,6 +83,52 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("NonConstantResourceId")
+    private boolean navigateFragment(int id) {
+            switch(id){
+                case R.id.action_settings:
+                    addFragment(new SettingsFragment());
+                    return true;
+                case R.id.action_main:
+                    addFragment(new MainFragment()); //TODO !!! Меню Навигации работает с MainFragment устаревшим способом
+                    return true;
+            }
+            return false;
+        }
+
+    private void inflateListNotes(Fragment fragment) {
+        addFragment(fragment);
+    };
+
+    private void addFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager(); //Получить менеджер фрагментов
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction(); // Открыть транзакцию
+        replacingFragment(fragment, fragmentTransaction);
+        /* Исправление отображения первой заметки при повороте на Ландшафт, Upgrade для popBackStack(name, flags)
+        Fragment currentFragment =  fragmentManager.findFragmentById(R.id.fragment_container);
+        Fragment currentFragment2 =  fragmentManager.findFragmentByTag(FRAGMENT_NOTE_TAG);
+        if (isLandscape && fragment instanceof MainFragment) {
+            fragmentManager.popBackStack();
+        } else {
+            fragmentTransaction.replace(R.id.fragment_container, currentFragment2, FRAGMENT_NOTES_LIST_TAG);
+        }*/
+        /* if (Settings.isBackStack){ // Добавить транзакцию в бэкстек //TODO #to_Delete Работает без этого. Вывод? К удалению.
+            fragmentTransaction.addToBackStack(null);
+        } */
+        fragmentTransaction.commit(); // Закрыть транзакцию
+    }
+
+    private void replacingFragment(Fragment fragment, FragmentTransaction fragmentTransaction) {
+        isLandscape = getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE;
+
+        if (isLandscape) {
+            fragmentTransaction.replace(R.id.notes_container, fragment);
+        } else {
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+        }
+    }
+
     // Действие кнопки назад в соответствии с хранимыми настройками
     private void initBackAsRemoveFragment(int id) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -92,48 +141,15 @@ public class MainActivity extends AppCompatActivity {
         else {
             //TODO Если бэкстэк уже пуст, ничего не делать. Выход из приложения буднь в левом меню if (fragmentManager.getBackStackEntryCount() != 0) {}
             fragmentManager.popBackStack();
+            /* Пояснение!:
+              [для однострочной простоты спользуем replace() вместо настройки add()]
+              Внутри созданной fragmentTransaction происходят действия .replace(),
+              которые можно отправить в стек обратного вызова с помощью .addToBackStack(null).
+              Если указать имя, можно будет перепрыгивать сразу к именованной транзакции с
+              определённым фрагментом fragmentManager.popBackStack(name, flags). Где flags - признак,
+              будем ли включать именованную транзакцию. 0 - фрагмент с именованной транзакцией, 1 или
+              POP_BACK_STACK_INCLUSIVE - предыдущее состояние относительно именованной транзакции. */
         }
-    }
-
-    @SuppressLint("NonConstantResourceId")
-    private boolean navigateFragment(int id) {
-            switch(id){
-                case R.id.action_settings:
-                    addFragment(new SettingsFragment());
-                    return true;
-                case R.id.action_main:
-                    addFragment(new MainFragment());
-                    return true;
-            }
-            return false;
-        }
-
-    private void inflateListNotes() {
-        addFragment(new MainFragment());
-    };
-
-    //TODO !!! Меню Навигации работает с MainFragment устаревшим способом
-    private void addFragment(Fragment fragment){
-        FragmentManager fragmentManager = getSupportFragmentManager(); //Получить менеджер фрагментов
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction(); // Открыть транзакцию
-        isLandscape = getResources().getConfiguration().orientation
-                == Configuration.ORIENTATION_LANDSCAPE;
-        if (isLandscape) {
-            fragmentTransaction.replace(R.id.notes_container, fragment);
-        } else {
-            fragmentTransaction.replace(R.id.fragment_container, fragment); // Для однострочной простоты спользуем replace() вместо add()
-        }
-        if (Settings.isBackStack){ // Добавить транзакцию в бэкстек
-            fragmentTransaction.addToBackStack(null);
-                /* Пояснение!:
-                Внутри созданной fragmentTransaction происходят действия .replace(),
-                которые можно отправить в стек обратного вызова с помощью .addToBackStack(null).
-                Если указать имя, можно будет перепрыгивать сразу к именованной транзакции с
-                определённым фрагментом fragmentManager.popBackStack(name, flags). Где flags - признак,
-                будем ли включать именованную транзакцию. 0 - фрагмент с именованной транзакцией, 1 или
-                POP_BACK_STACK_INCLUSIVE - предыдущее состояние относительно именованной транзакции.*/
-        }
-        fragmentTransaction.commit(); // Закрыть транзакцию
     }
 
     private Fragment getVisibleFragment(FragmentManager fragmentManager){
@@ -252,12 +268,11 @@ public class MainActivity extends AppCompatActivity {
 
 }
 
-//TODO#DEL_for_HW8 - тэг для очистки оставшегося старого кода
-
 // Задание.
-/* ✓ 1. Создайте список ваших заметок.
-   ✓ 2. Создайте карточку для элемента списка.
-   ✓ 3. Класс данных, созданный на шестом уроке, используйте для заполнения карточки списка.
-   ✓ 4. * Создайте фрагмент для редактирования данных в конкретной карточке. Этот фрагмент пока
-        можно вызвать через основное меню. */
+/* ✓ 1. Сделайте фрагмент добавления и редактирования данных, если вы ещё не сделали его.
+     2. Сделайте навигацию между фрагментами, также организуйте обмен данными между
+        фрагментами.
+     3. Создайте контекстное меню для изменения и удаления заметок.
+     4. *Изучите, каким образом можно вызывать DatePicker в виде диалогового окна. Создайте
+        текстовое поле, при нажатии на которое вызывалось бы диалоговое окно с DatePicker. */
 // Serega, sure
