@@ -15,6 +15,10 @@ public class CardData implements Parcelable {
         this.noteColor = noteColor;
     }
 
+    public CardData(String noteName, String noteText){
+        this(noteName, noteText,"#EFD446"); // По умолчанию заметки жёлтые
+    }
+
     // Перегрузим наш класс для передачи, обмена данных между фрагментами, а также для смены ориентации экрана
 // Начало обслуживания Parcel
     protected CardData(Parcel in) {

@@ -15,12 +15,12 @@
         android:title="@string/btnCompassMain"
         android:icon="@android:drawable/ic_menu_compass"
         app:showAsAction="always" />
-    <item
+    <!--<item
         android:id="@+id/add_note__main_menu"
         android:orderInCategory="20"
         android:title="@string/btnAddNewNote"
         android:icon="@android:drawable/ic_menu_add"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom" />-->
     <item android:id="@+id/more__main_menu"
         android:orderInCategory="50"
         android:title="@string/btnMoreMainMenu"

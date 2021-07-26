@@ -10,6 +10,8 @@
     <!--  Как и у NestedScrollView - у CardView м.б лишь один ребёнок.
           Т.е наполнение стоит заворачивать в какой-то общий View-элемент  -->
 
+    <!--  Если в content_main стоит scroll над списков, то в CardView скрол надо отключать  -->
+
     <!--  Элемент списка м.б любой сложности - однако, кроме фрагментов. Они не допускаются  -->
 
     <LinearLayout
@@ -20,7 +22,7 @@
             android:id="@+id/listItemTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="30sp" />
+            android:textSize="@dimen/cards_size" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

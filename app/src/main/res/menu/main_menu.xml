@@ -2,6 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/add_note__main_menu"
+        android:orderInCategory="20"
+        android:title="@string/btnAddNewNote"
+        android:icon="@android:drawable/ic_menu_add"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/notes_view_choice__main_menu"
         android:orderInCategory="30"
         android:title="@string/btnListViewChoiceMainMenu"

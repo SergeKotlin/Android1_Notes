@@ -3,7 +3,10 @@ package com.android1.android1_notes;
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +30,10 @@ public class MainFragment extends Fragment {
     public static final String CURRENT_NOTE = "CurrentNote";
     private static CardData note;
 
+    private CardsSource data;
+    private MainAdapter adapter;
+    private RecyclerView recyclerView;
+
     private boolean isLandscape;
 
     public static MainFragment newInstance() {
@@ -36,10 +43,7 @@ public class MainFragment extends Fragment {
     @Override @Nullable
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_notes_list);
-        CardsSource data = new CardsSourceImpl(getResources()).init(); // Получим источник данных для списка
-        initRecyclerView(recyclerView, data);
+        initView(view);
 
         setHasOptionsMenu(true); // Регестрируем меню приложения для фрагмента! Не забываем
         return view;
@@ -48,7 +52,6 @@ public class MainFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
 
         isLandscape = getResources().getConfiguration().orientation // Для определение, можно ли открыть рядом заметку в другом фрагменте
                 == Configuration.ORIENTATION_LANDSCAPE;
@@ -78,19 +81,23 @@ public class MainFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
+    private void initView(View view) {
+        recyclerView = view.findViewById(R.id.recycler_notes_list);
+        data = new CardsSourceImpl(getResources()).init(); // Получим источник данных для списка
+        initRecyclerView();
+    }
+
     // RecyclerView - размещает элементы списка, через Менеджера, а также делает запросы к Адаптеру на получение этих данных. Т.о. командует адаптером
     @SuppressLint("UseCompatLoadingForDrawables")
-    private void initRecyclerView(RecyclerView recyclerView, CardsSource data){
+    private void initRecyclerView() {
         recyclerView.setHasFixedSize(true); // Установка для повышения производительности системы (все эл-ты списка одинаковые по размеру, обработка ускорится)
 
         // Работаем со встроенным менеджером
         // Можно просто объявить менеджер в соотв-щем макете app:layoutManager="LinearLayoutManager" (ЕСЛИ менеджер стандартный)
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-//        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
-        recyclerView.setLayoutManager(layoutManager);
+        // Другой вариант - new GridLayoutManager(getContext(), 2);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
-        MainAdapter adapter = new MainAdapter(data); // Установим адаптер
+        adapter = new MainAdapter(data); // Установим адаптер
         recyclerView.setAdapter(adapter);
 
         //  Добавим разделитель карточек
@@ -134,10 +141,10 @@ public class MainFragment extends Fragment {
         Toast.makeText(getContext(), String.format("Позиция - %d", position), Toast.LENGTH_SHORT).show();
     }
 
-    /*@Override
+    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.main_menu, menu);
-    }*/
+    }
 
     //TODO Нерешено
     @Override @SuppressLint("NonConstantResourceId")
@@ -147,19 +154,31 @@ public class MainFragment extends Fragment {
         // К тому же, фрагмент для списка заметок будто добавляется дважды, тогда это мешает и корректному SaveInstance
         int id = item.getItemId();
         switch (id) {
+            //TODO Здорово, только вот в массив нужно записывать тоже изменения (касается переиманования и удаления также)
+            case (R.id.add_note__main_menu):
+                toastOnOptionsItemSelected("Добавление новой заметки");
+                data.addCardData(new CardData("Новая заметка", "Текст"));
+                adapter.notifyItemInserted(data.size() -  1); // Говорит адаптеру добавить элемент в RecyclerView
+                recyclerView.smoothScrollToPosition(data.size() -  1); // Упрощенный scrollToPosition()
+                return true;
+                /*FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                Fragment currentFragment =  fragmentManager.findFragmentById(R.id.fragment_container);
+                fragmentTransaction.replace(R.id.fragment_container, currentFragment);
+                fragmentTransaction.commit();*/
             case R.id.notes_view_choice__main_menu:
-//                toastOnOptionsItemSelected("Выбор вида представления");
+                toastOnOptionsItemSelected("Выбор вида представления");
                 return true;
             //TODO !!! Сортировка должна быть здесь, на main фрагменте, но toasts срабатывают лишь на активити
         }
         return super.onOptionsItemSelected(item);
     }
 
-    /*private void toastOnOptionsItemSelected(CharSequence text) {
+    private void toastOnOptionsItemSelected(CharSequence text) {
         Toast toast = Toast.makeText(getContext(),
                 text, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.END, 0, 0);
         toast.show();
-    }*/
+    }
 
 }

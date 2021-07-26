@@ -29,7 +29,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    /* Возможен Upgrade для popBackStack(name, flags) к определённому состоянию
+    /* Возможен Upgrade для popBackStack(name, flags) к определённому состоянию. 9-ый урок Аникина, 2 февраля
     private static final String FRAGMENT_NOTES_LIST_TAG = "NotesList";
     private static final String FRAGMENT_NOTE_TAG = "Note"; */
     private boolean isLandscape;
@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager(); //Получить менеджер фрагментов
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction(); // Открыть транзакцию
         replacingFragment(fragment, fragmentTransaction);
+
         /* Исправление отображения первой заметки при повороте на Ландшафт, Upgrade для popBackStack(name, flags)
         Fragment currentFragment =  fragmentManager.findFragmentById(R.id.fragment_container);
         Fragment currentFragment2 =  fragmentManager.findFragmentByTag(FRAGMENT_NOTE_TAG);
@@ -112,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             fragmentTransaction.replace(R.id.fragment_container, currentFragment2, FRAGMENT_NOTES_LIST_TAG);
         }*/
+
         /* if (Settings.isBackStack){ // Добавить транзакцию в бэкстек //TODO #to_Delete Работает без этого. Вывод? К удалению.
             fragmentTransaction.addToBackStack(null);
         } */
@@ -195,15 +197,15 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         switch (id) {
-            case (R.id.add_note__main_menu):
+            /*case (R.id.add_note__main_menu):
                 toastOnOptionsItemSelected("Добавление новой заметки");
                 // Заглушка //TODO addFragment(new NoteFragment());
-                return true;
+                return true;*/
             case (R.id.some_item):
                 toastOnOptionsItemSelected("Новая фича");
                 return true;
             //TODO Сортировка должна быть на main фрагменте, однако toasts срабатывают лишь на активити
-            case R.id.sort_by_name_ascending__main_menu:
+            /*case R.id.sort_by_name_ascending__main_menu:
                 toastOnOptionsItemSelected("Алфавитная сортировка - по возрастанию");
                 return true;
             case R.id.sort_by_name_descending__main_menu:
@@ -214,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.sort_by_date_descending__main_menu:
                 toastOnOptionsItemSelected("Временная сортировка - по убыванию");
-                return true;
+                return true;*/
         }
         initBackAsRemoveFragment(id);
         return super.onOptionsItemSelected(item);

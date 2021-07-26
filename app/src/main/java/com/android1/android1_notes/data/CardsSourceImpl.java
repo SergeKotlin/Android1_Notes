@@ -57,4 +57,29 @@ public class CardsSourceImpl implements CardsSource {
     public int size(){
         return dataSource.size();
     }
+
+    @Override
+    public void deleteCardData(int position) {
+        dataSource.remove(position);
+    }
+
+    @Override
+    public void updateCardData(int position, CardData cardData) {
+        dataSource.set(position, cardData);
+    }
+
+    @Override
+    public void addCardData(CardData cardData) {
+        dataSource.add(cardData);
+        /* Примечание!:
+        При выборе пункта добавления вызываем метод источника данных addCardData(),
+        который добавит данные в список. Затем обязательно надо предупредить RecyclerView.Adapter,
+        что мы добавили новую запись, чтобы эта запись была отрисована на экране, методом
+        adapter.notifyItemInserted() с указанием позиции этого элемента.
+        Метод RecyclerView.scrollToPosition() прыгнет на заданную позицию, таким образом мы увидим
+        вновь добавленные данные. Если надо мягко перекрутить весь список, используем метод
+        smoothScrollToPosition(), но надо помнить, что в этом случае RecyclerView прочитает все
+        элементы до конца. Если же использовать scrollToPosition(), то прочитаются только элементы,
+        находящиеся рядом с нужной позицией.*/
+    }
 }
