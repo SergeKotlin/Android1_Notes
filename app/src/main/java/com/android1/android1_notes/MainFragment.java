@@ -3,6 +3,7 @@ package com.android1.android1_notes;
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -97,7 +98,7 @@ public class MainFragment extends Fragment {
         // Другой вариант - new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = new MainAdapter(data); // Установим адаптер
+        adapter = new MainAdapter(data, this); // Установим адаптер
         recyclerView.setAdapter(adapter);
 
         //  Добавим разделитель карточек
@@ -179,6 +180,56 @@ public class MainFragment extends Fragment {
                 text, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.END, 0, 0);
         toast.show();
+    }
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = requireActivity().getMenuInflater();
+        inflater.inflate(R.menu.context_main, menu);
+    }
+
+    @Override @SuppressLint("NonConstantResourceId")
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        int position = adapter.getContextPosition();
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.copy_note__context_main:
+                toastOnOptionsItemSelected("Заметка скопирована");
+                return true;
+            case R.id.share_note__context_main:
+                toastOnOptionsItemSelected("Заметка передана / Открыта через..");
+                return true;
+            case R.id.new_label__context_main:
+                toastOnOptionsItemSelected("Добавлена новая метка");
+                return true;
+            case R.id.pin_to_top__context_main:
+                toastOnOptionsItemSelected("Заметка закреплена");
+                return true;
+            case R.id.search__context_main:
+                toastOnOptionsItemSelected("Поиск в заметке");
+                return true;
+            case R.id.info__context_main:
+                toastOnOptionsItemSelected("Детали заметки");
+                return true;
+            case R.id.rename__context_main:
+                toastOnOptionsItemSelected("Заметка переименована");
+                data.updateCardData(position,
+                        new CardData("Заметка " + position,
+                                data.getCardData(position).getText(),
+                                data.getCardData(position).getColor()
+//                              , Calendar.getInstance().getTime()
+                        ));
+                adapter.notifyItemChanged(position);
+                return true;
+            case R.id.delete__context_main:
+                toastOnOptionsItemSelected("Заметка удалена");
+                data.deleteCardData(position);
+                adapter.notifyItemRemoved(position);
+                return true;
+        }
+        return super.onContextItemSelected(item);
     }
 
 }

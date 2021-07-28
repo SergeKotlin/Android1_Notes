@@ -12,5 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/list_item"/>
+    <!--  В RecyclerView строенный скроллинг, внешний скроллинг будем с ним
+     конфликтовать. Иначе отключаем android:nestedScrollingEnabled="false"  -->
+    <!--  ! Но тогда перестают работать методы recyclerView.scrollToPosition(),
+            .smoothScrollToPosition() и не только  -->
 
 </FrameLayout>

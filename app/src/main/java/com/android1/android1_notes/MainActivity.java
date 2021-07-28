@@ -4,14 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -230,13 +227,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //TODO Перенести ContextMenu во Фрагмент. С новой логикой, не получилось. Хз, как объявить во фрагменте через ViewHolder
-    @Override
+    // #to_Delete Вроде перенеслось!
+    /*@Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         getMenuInflater().inflate(R.menu.context_main, menu);
-    }
+    }*/
 
-    @Override @SuppressLint("NonConstantResourceId")
+    /*@Override @SuppressLint("NonConstantResourceId")
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         switch (id) {
@@ -266,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return super.onContextItemSelected(item);
-    }
+    }*/
 
 }
 
