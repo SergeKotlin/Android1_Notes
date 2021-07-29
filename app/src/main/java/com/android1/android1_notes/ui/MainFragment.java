@@ -1,4 +1,4 @@
-package com.android1.android1_notes;
+package com.android1.android1_notes.ui;
 
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
@@ -22,11 +22,12 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android1.android1_notes.R;
 import com.android1.android1_notes.data.CardData;
 import com.android1.android1_notes.data.CardsSource;
 import com.android1.android1_notes.data.CardsSourceImpl;
 
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements OnRegisterContext {
 
     public static final String CURRENT_NOTE = "CurrentNote";
     private static CardData note;
@@ -230,6 +231,11 @@ public class MainFragment extends Fragment {
                 return true;
         }
         return super.onContextItemSelected(item);
+    }
+
+    @Override
+    public void onRegister(View view) {
+        registerForContextMenu(view); // Регестрируем Context menu
     }
 
 }

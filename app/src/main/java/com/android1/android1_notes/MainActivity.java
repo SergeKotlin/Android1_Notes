@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.android1.android1_notes.data.Settings;
+import com.android1.android1_notes.ui.MainFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;

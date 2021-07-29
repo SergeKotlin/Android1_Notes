@@ -1,4 +1,4 @@
-package com.android1.android1_notes;
+package com.android1.android1_notes.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -19,6 +19,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 
+import com.android1.android1_notes.R;
 import com.android1.android1_notes.data.CardData;
 
 public class CardFragment extends Fragment {

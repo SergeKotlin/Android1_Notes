@@ -1,4 +1,4 @@
-package com.android1.android1_notes;
+package com.android1.android1_notes.ui;
 
 import android.graphics.Color;
 import android.os.Build;
@@ -10,9 +10,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android1.android1_notes.R;
 import com.android1.android1_notes.data.CardData;
 import com.android1.android1_notes.data.CardsSource;
 
@@ -22,10 +22,11 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     private final static String TAG = "MainAdapter";
     private final CardsSource dataSource; // Любая списковская структура данных, и элемент списка во вьюхе м.б любым - кроме фрагментов, они не допускаются
     private OnItemClickListener itemClickListener; // Слушатель, устанавливается извне
-    private final Fragment fragment; // Чтобы повесить контекстное меню, а также contextPosition
+    private final OnRegisterContext fragment; // Чтобы повесить контекстное меню, а также contextPosition
+    // !Передавая интерфейс вместо фрагмента — мы т.о образом передаём только "разрешенную часть" фрагмента, что и описана в интерфейса
     private int contextPosition;
 
-    public MainAdapter(CardsSource dataSource, Fragment fragment) { // Передаём в конструктор источник данных (массив. А м.б и запрос к БД)
+    public MainAdapter(CardsSource dataSource, OnRegisterContext fragment) { // Передаём в конструктор источник данных (массив. А м.б и запрос к БД)
         this.dataSource = dataSource;
         this.fragment = fragment;
     }
@@ -88,9 +89,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 public boolean onLongClick(View v) {
                     contextPosition = getLayoutPosition();
-                    itemView.showContextMenu(10, 10); // ! У меня была API 22, а showContextMenu() поддерживается с 24 версии.
+                    itemView.showContextMenu(10, 10); // смещение от верхнего левого угла
+                    // ! У меня была API 22, а showContextMenu() поддерживается с 24 версии.
                     // Я чё-т натыркал, чтобы AVD привести сразу к API 30.. (24 недоступна в списке)
-                    return true;
+                    return true; // Обрабатывать последующие нажатия или нет. (Нет)
                 }
             });
 
@@ -102,11 +104,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             if (fragment != null){
                 itemView.setOnLongClickListener(v -> {
                     // Важно!:
-                    // А чё ты думаешь, и всё? Нет, это лишь дублёр события. Нужно объявить само действие, как долгий клик на элементе
+                    // На тексте уже висит действие по клику, поэтому долгий клик, он же контекстное меню, следует также явно назначить элементу.
+                    // Ну и зарегать по нему контекстное меню, разумеется
                     contextPosition = getLayoutPosition();
-                    return false;
+                    return false; // Обрабатывать последующие нажатия или нет. (Да)
                 });
-                fragment.registerForContextMenu(itemView); // Регестрируем Context menu
+                fragment.onRegister(itemView); // Регестрируем Context menu
             }
         }
 
