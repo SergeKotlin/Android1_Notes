@@ -1,6 +1,7 @@
 package com.android1.android1_notes.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -22,12 +23,14 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android1.android1_notes.MainActivity;
+import com.android1.android1_notes.Navigation;
 import com.android1.android1_notes.R;
 import com.android1.android1_notes.data.CardData;
 import com.android1.android1_notes.data.CardsSource;
 import com.android1.android1_notes.data.CardsSourceImpl;
-
-import java.util.Calendar;
+import com.android1.android1_notes.observer.Observer;
+import com.android1.android1_notes.observer.Publisher;
 
 public class MainFragment extends Fragment implements OnRegisterContext {
 
@@ -39,9 +42,19 @@ public class MainFragment extends Fragment implements OnRegisterContext {
     private RecyclerView recyclerView;
 
     private boolean isLandscape;
+    private Navigation navigation;
+    private Publisher publisher;
 
     public static MainFragment newInstance() {
         return new MainFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        /* Поскольку onCreateView запускается каждый раз при возврате в фрагмент,
+        данные надо создавать один раз */
+        data = new CardsSourceImpl(getResources()).init();  // Получим источник данных для списка
     }
 
     @Override @Nullable
@@ -51,6 +64,21 @@ public class MainFragment extends Fragment implements OnRegisterContext {
 
         setHasOptionsMenu(true); // Регестрируем меню приложения для фрагмента! Не забываем
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        MainActivity activity = (MainActivity)context;
+        navigation = activity.getNavigation();
+        publisher = activity.getPublisher();
+    }
+
+    @Override
+    public void onDetach() {
+        navigation = null;
+        publisher = null;
+        super.onDetach();
     }
 
     @Override
@@ -87,7 +115,6 @@ public class MainFragment extends Fragment implements OnRegisterContext {
 
     private void initView(View view) {
         recyclerView = view.findViewById(R.id.recycler_notes_list);
-        data = new CardsSourceImpl(getResources()).init(); // Получим источник данных для списка
         initRecyclerView();
     }
 
@@ -161,9 +188,21 @@ public class MainFragment extends Fragment implements OnRegisterContext {
             //TODO Здорово, только вот в массив нужно записывать тоже изменения (касается переиманования и удаления также)
             case (R.id.add_note__main_menu):
                 toastOnOptionsItemSelected("Добавление новой заметки");
-                data.addCardData(new CardData("Новая заметка", "Текст", Calendar.getInstance().getTime()));
-                adapter.notifyItemInserted(data.size() -  1); // Говорит адаптеру добавить элемент в RecyclerView
-                recyclerView.smoothScrollToPosition(data.size() -  1); // Упрощенный scrollToPosition()
+                // data.addCardData(new CardData("Новая заметка", "Текст", "#BC18E011", Calendar.getInstance().getTime()));
+                // adapter.notifyItemInserted(data.size() - 1);
+                // recyclerView.scrollToPosition(data.size() - 1);
+
+                navigation.addFragment(CardFragment.newInstance(note), isLandscape, true);
+                publisher.subscribe(new Observer() {
+                    @Override
+                    public void updateCardData(CardData cardData) {
+                        //TODO:
+                        // Как новый способ добавляет? Всё время предыдущая открытая копируется в шаблон.. Если только не создание при запуске
+                        data.addCardData(cardData);
+                        adapter.notifyItemInserted(data.size() - 1); // Говорит адаптеру добавить элемент в RecyclerView
+                        recyclerView.scrollToPosition(data.size() - 1); // Упрощенный scrollToPosition()
+                    }
+                });
                 return true;
                 /*FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -218,13 +257,22 @@ public class MainFragment extends Fragment implements OnRegisterContext {
                 return true;
             case R.id.rename__context_main:
                 toastOnOptionsItemSelected("Заметка переименована");
-                data.updateCardData(position,
+                /*data.updateCardData(position,
                         new CardData("Заметка " + position,
                                 data.getCardData(position).getText(),
                                 data.getCardData(position).getColor()
                               , Calendar.getInstance().getTime()
                         ));
-                adapter.notifyItemChanged(position);
+                adapter.notifyItemChanged(position);*/
+
+                navigation.addFragment(CardFragment.newInstance(data.getCardData(position)),true, true);
+                publisher.subscribe(new Observer() {
+                    @Override
+                    public void updateCardData(CardData cardData) {
+                        data.updateCardData(position, cardData);
+                        adapter.notifyItemChanged(position);
+                    }
+                });
                 return true;
             case R.id.delete__context_main:
                 toastOnOptionsItemSelected("Заметка удалена");

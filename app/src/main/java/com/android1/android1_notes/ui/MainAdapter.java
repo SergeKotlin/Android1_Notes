@@ -16,6 +16,8 @@ import com.android1.android1_notes.R;
 import com.android1.android1_notes.data.CardData;
 import com.android1.android1_notes.data.CardsSource;
 
+import java.text.SimpleDateFormat;
+
 // Класс адаптера. Соединяет данные с их отображением. Через встроенный класс ViewHolder показывает данные в пользовательском интерфейсе
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
@@ -72,10 +74,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView name;
+        private TextView date;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.listItemTextView);
+            date = itemView.findViewById(R.id.date);;
 
             // Обработчик нажатий на этом ViewHolder
             name.setOnClickListener(v -> {
@@ -104,10 +108,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             if (fragment != null){
                 itemView.setOnLongClickListener(v -> {
                     // Важно!:
-                    // На тексте уже висит действие по клику, поэтому долгий клик, он же контекстное меню, следует также явно назначить элементу.
-                    // Ну и зарегать по нему контекстное меню, разумеется
+                    /* На тексте уже висит действие по клику, поэтому долгий клик, он же контекстное меню,
+                    следует также явно назначить элементу. Ну и зарегать по нему контекстное меню, разумеется */
                     contextPosition = getLayoutPosition();
-                    return false; // Обрабатывать последующие нажатия или нет. (Да)
+                    return false; // Обрабатывать последующие нажатия или нет..
                 });
                 fragment.onRegister(itemView); // Регестрируем Context menu
             }
@@ -117,6 +121,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         public void setData(CardData cardData){
             name.setText(cardData.getName());
             name.setTextColor(Color.parseColor(cardData.getColor()));
+            date.setText(new SimpleDateFormat("dd-MM-yy").format(cardData.getDate()));
         }
     }
 }

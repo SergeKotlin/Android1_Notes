@@ -36,19 +36,33 @@
             android:src="@drawable/ic_menu_moreoverflow_material" />
     </LinearLayout>
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/nameNote"
+        android:inputType="textMultiLine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/note_name_text_view"
-        android:text="@string/default_is_first_note_name" />
+        android:text="@string/default_is_first_note_name"
+        tools:ignore="TextViewEdits" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/textNote"
         android:inputType="textMultiLine"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/default_is_first_note_text"
         android:gravity="top" />
+
+    <DatePicker
+        android:id="@+id/inputDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner" />
+    <!-- Также можно делать режим календаря
+    android:datePickerMode="calendar"
+    и режим отображения календаря в spinner-режиме
+    android:calendarViewShown="true" -->
 
 </LinearLayout>

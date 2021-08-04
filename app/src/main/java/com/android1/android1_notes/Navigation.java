@@ -14,7 +14,7 @@ public class Navigation {
         this.isLandscape = isLandscape;
     }
 
-    protected void addFragment(Fragment fragment, boolean isLandScape, boolean useBackStack) {
+    public void addFragment(Fragment fragment, boolean isLandScape, boolean useBackStack) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction(); // Открыть транзакцию
         replacingFragment(fragment, fragmentTransaction);
         if (useBackStack) {

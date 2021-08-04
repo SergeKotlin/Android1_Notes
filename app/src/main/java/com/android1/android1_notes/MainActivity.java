@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.android1.android1_notes.data.Settings;
+import com.android1.android1_notes.observer.Publisher;
 import com.android1.android1_notes.ui.MainFragment;
 import com.google.android.material.navigation.NavigationView;
 
@@ -29,8 +30,9 @@ public class MainActivity extends AppCompatActivity {
     /* Возможен Upgrade для popBackStack(name, flags) к определённому состоянию. 9-ый урок Аникина, 2 февраля
     private static final String FRAGMENT_NOTES_LIST_TAG = "NotesList";
     private static final String FRAGMENT_NOTE_TAG = "Note"; */
-    private Navigation navigation;
     private boolean isLandscape;
+    private Navigation navigation;
+    private final Publisher publisher = new Publisher();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,15 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         return toolbar;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     private void initDrawer(Toolbar toolbar) {
@@ -202,6 +212,10 @@ public class MainActivity extends AppCompatActivity {
 
     public Navigation getNavigation() {
         return navigation;
+    }
+
+    public Publisher getPublisher() {
+        return publisher;
     }
 
 }
