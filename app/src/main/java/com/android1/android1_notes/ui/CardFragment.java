@@ -28,9 +28,9 @@ public class CardFragment extends Fragment {
 
     // Фабричный метод создания фрагмента (Фрагменты рекомендуется создавать через фабричные методы)
     public static CardFragment newInstance(CardData data) {
-        CardFragment f = new CardFragment(); // создание
+        CardFragment fragment = new CardFragment(); // создание
         CardFragment.note = data;
-        return f;
+        return fragment;
     }
 
     @Override @SuppressLint("Recycle")
@@ -43,7 +43,6 @@ public class CardFragment extends Fragment {
 
     @SuppressLint("Recycle")
     private View showNote(LayoutInflater inflater, ViewGroup container) {
-
         View view = inflater.inflate(R.layout.fragment_note, container, false); // Получаем головной элемент из макета
         AppCompatEditText editTextNote = view.findViewById(R.id.textNote); // найти в контейнере элемент-заметку (куда сетить)
         editTextNote.setText(note.getText());

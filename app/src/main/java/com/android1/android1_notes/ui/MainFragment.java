@@ -27,6 +27,8 @@ import com.android1.android1_notes.data.CardData;
 import com.android1.android1_notes.data.CardsSource;
 import com.android1.android1_notes.data.CardsSourceImpl;
 
+import java.util.Calendar;
+
 public class MainFragment extends Fragment implements OnRegisterContext {
 
     public static final String CURRENT_NOTE = "CurrentNote";
@@ -159,7 +161,7 @@ public class MainFragment extends Fragment implements OnRegisterContext {
             //TODO Здорово, только вот в массив нужно записывать тоже изменения (касается переиманования и удаления также)
             case (R.id.add_note__main_menu):
                 toastOnOptionsItemSelected("Добавление новой заметки");
-                data.addCardData(new CardData("Новая заметка", "Текст"));
+                data.addCardData(new CardData("Новая заметка", "Текст", Calendar.getInstance().getTime()));
                 adapter.notifyItemInserted(data.size() -  1); // Говорит адаптеру добавить элемент в RecyclerView
                 recyclerView.smoothScrollToPosition(data.size() -  1); // Упрощенный scrollToPosition()
                 return true;
@@ -220,7 +222,7 @@ public class MainFragment extends Fragment implements OnRegisterContext {
                         new CardData("Заметка " + position,
                                 data.getCardData(position).getText(),
                                 data.getCardData(position).getColor()
-//                              , Calendar.getInstance().getTime()
+                              , Calendar.getInstance().getTime()
                         ));
                 adapter.notifyItemChanged(position);
                 return true;

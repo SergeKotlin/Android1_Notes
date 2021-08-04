@@ -6,6 +6,7 @@ import com.android1.android1_notes.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
@@ -26,7 +27,7 @@ public class CardsSourceImpl implements CardsSource {
         String[] noteColors = initNotesColors(noteNames.length); // цвета заметок из ресурсов
 
         for (int i = 0; i < noteNames.length; i++) { // заполнение источника данных
-            dataSource.add(new CardData(noteNames[i], noteTexts[i], noteColors[i]));
+            dataSource.add(new CardData(noteNames[i], noteTexts[i], noteColors[i], Calendar.getInstance().getTime()));
         }
         return this;
     }

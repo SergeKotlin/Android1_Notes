@@ -3,20 +3,24 @@ package com.android1.android1_notes.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Date;
+
 public class CardData implements Parcelable {
 
     private final String noteName;
     private final String noteText;
     private final String noteColor;
+    private Date noteDate;
 
-    public CardData(String noteName, String noteText, String noteColor){
+    public CardData(String noteName, String noteText, String noteColor, Date noteDate){
         this.noteName = noteName;
         this.noteText = noteText;
         this.noteColor = noteColor;
+        this.noteDate = noteDate;
     }
 
-    public CardData(String noteName, String noteText){
-        this(noteName, noteText,"#EFD446"); // По умолчанию заметки жёлтые
+    public CardData(String noteName, String noteText, Date noteDate){
+        this(noteName, noteText,"#EFD446", noteDate); // По умолчанию заметки жёлтые
     }
 
     // Перегрузим наш класс для передачи, обмена данных между фрагментами, а также для смены ориентации экрана
@@ -25,6 +29,7 @@ public class CardData implements Parcelable {
         noteName = in.readString();
         noteText = in.readString();
         noteColor = in.readString();
+        noteDate = new Date(in.readLong());
     }
 
     @Override
@@ -32,6 +37,7 @@ public class CardData implements Parcelable {
         dest.writeString(getName());
         dest.writeString(getText());
         dest.writeString(getColor());
+        dest.writeLong(noteDate.getTime());
     }
 
     @Override
@@ -61,6 +67,10 @@ public class CardData implements Parcelable {
 
     public String getColor() {
         return noteColor;
+    }
+
+    public Date getDate() {
+        return noteDate;
     }
 
 }

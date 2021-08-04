@@ -17,7 +17,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.android1.android1_notes.data.Settings;
 import com.android1.android1_notes.ui.MainFragment;
@@ -30,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     /* Возможен Upgrade для popBackStack(name, flags) к определённому состоянию. 9-ый урок Аникина, 2 февраля
     private static final String FRAGMENT_NOTES_LIST_TAG = "NotesList";
     private static final String FRAGMENT_NOTE_TAG = "Note"; */
+    private Navigation navigation;
     private boolean isLandscape;
 
     @Override
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         readSettings();
         initView();
-        inflateListNotes(MainFragment.newInstance()); // Наполняем список заметок
+        navigation(MainFragment.newInstance(), false); // Наполняем список заметок
     }
 
     private void readSettings(){
@@ -85,48 +85,21 @@ public class MainActivity extends AppCompatActivity {
     private boolean navigateFragment(int id) {
             switch(id){
                 case R.id.action_settings:
-                    addFragment(new SettingsFragment());
+                    navigation(new SettingsFragment(), true);
                     return true;
                 case R.id.action_main:
-                    addFragment(new MainFragment()); //TODO !!! Меню Навигации работает с MainFragment устаревшим способом
+//                    navigation(new MainFragment(), true);
+                    navigation(MainFragment.newInstance(), true); //TODO !!! Меню Навигации работает с MainFragment устаревшим способом
                     return true;
             }
             return false;
         }
 
-    private void inflateListNotes(Fragment fragment) {
-        addFragment(fragment);
-    };
-
-    private void addFragment(Fragment fragment){
-        FragmentManager fragmentManager = getSupportFragmentManager(); //Получить менеджер фрагментов
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction(); // Открыть транзакцию
-        replacingFragment(fragment, fragmentTransaction);
-
-        /* Исправление отображения первой заметки при повороте на Ландшафт, Upgrade для popBackStack(name, flags)
-        Fragment currentFragment =  fragmentManager.findFragmentById(R.id.fragment_container);
-        Fragment currentFragment2 =  fragmentManager.findFragmentByTag(FRAGMENT_NOTE_TAG);
-        if (isLandscape && fragment instanceof MainFragment) {
-            fragmentManager.popBackStack();
-        } else {
-            fragmentTransaction.replace(R.id.fragment_container, currentFragment2, FRAGMENT_NOTES_LIST_TAG);
-        }*/
-
-        /* if (Settings.isBackStack){ // Добавить транзакцию в бэкстек //TODO #to_Delete Работает без этого. Вывод? К удалению.
-            fragmentTransaction.addToBackStack(null);
-        } */
-        fragmentTransaction.commit(); // Закрыть транзакцию
-    }
-
-    private void replacingFragment(Fragment fragment, FragmentTransaction fragmentTransaction) {
+    private void navigation(Fragment fragment, boolean useBackStack) {
         isLandscape = getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE;
-
-        if (isLandscape) {
-            fragmentTransaction.replace(R.id.notes_container, fragment);
-        } else {
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
-        }
+        navigation = new Navigation(getSupportFragmentManager(), isLandscape);
+        getNavigation().addFragment(fragment, isLandscape, useBackStack);
     }
 
     // Действие кнопки назад в соответствии с хранимыми настройками
@@ -197,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
             /*case (R.id.add_note__main_menu):
                 toastOnOptionsItemSelected("Добавление новой заметки");
-                // Заглушка //TODO addFragment(new NoteFragment());
+                // Заглушка //TODO navigation(new NoteFragment(), true);
                 return true;*/
             case (R.id.some_item):
                 toastOnOptionsItemSelected("Новая фича");
@@ -227,45 +200,9 @@ public class MainActivity extends AppCompatActivity {
         toast.show();
     }
 
-    //TODO Перенести ContextMenu во Фрагмент. С новой логикой, не получилось. Хз, как объявить во фрагменте через ViewHolder
-    // #to_Delete Вроде перенеслось!
-    /*@Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        getMenuInflater().inflate(R.menu.context_main, menu);
-    }*/
-
-    /*@Override @SuppressLint("NonConstantResourceId")
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.copy_note__context_main:
-                toastOnOptionsItemSelected("Заметка скопирована");
-                return true;
-            case R.id.share_note__context_main:
-                toastOnOptionsItemSelected("Заметка передана / Открыта через..");
-                return true;
-            case R.id.new_label__context_main:
-                toastOnOptionsItemSelected("Добавлена новая метка");
-                return true;
-            case R.id.pin_to_top__context_main:
-                toastOnOptionsItemSelected("Заметка закреплена");
-                return true;
-            case R.id.search__context_main:
-                toastOnOptionsItemSelected("Поиск в заметке");
-                return true;
-            case R.id.info__context_main:
-                toastOnOptionsItemSelected("Детали заметки");
-                return true;
-            case R.id.rename__context_main:
-                toastOnOptionsItemSelected("Заметка переименована");
-                return true;
-            case R.id.delete__context_main:
-                toastOnOptionsItemSelected("Заметка удалена");
-                return true;
-        }
-        return super.onContextItemSelected(item);
-    }*/
+    public Navigation getNavigation() {
+        return navigation;
+    }
 
 }
 

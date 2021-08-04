@@ -40,7 +40,7 @@
         android:id="@+id/nameNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
+        android:textSize="@dimen/note_name_text_view"
         android:text="@string/default_is_first_note_name" />
 
     <androidx.appcompat.widget.AppCompatEditText
