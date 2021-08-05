@@ -53,6 +53,8 @@
         android:text="@string/default_is_first_note_text"
         android:gravity="top" />
 
+    <!--  TODO Эффективнее делить пространство между DatePicker и EditText.
+           Календарь лучше вынести во всплывающее меню  -->
     <DatePicker
         android:id="@+id/inputDate"
         android:layout_width="match_parent"

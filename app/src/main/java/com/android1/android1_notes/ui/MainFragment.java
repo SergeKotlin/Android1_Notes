@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,6 +41,7 @@ public class MainFragment extends Fragment implements OnRegisterContext {
     private CardsSource data;
     private MainAdapter adapter;
     private RecyclerView recyclerView;
+    private static final int MY_DEFAULT_DURATION = 1000; // Для анимации, класс DefaultItemAnimator
 
     private boolean isLandscape;
     private Navigation navigation;
@@ -136,6 +138,12 @@ public class MainFragment extends Fragment implements OnRegisterContext {
         itemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator,null));
         recyclerView.addItemDecoration(itemDecoration);
 
+        // Установим долгоиграющую анимацию
+        DefaultItemAnimator animator = new DefaultItemAnimator();
+        animator.setAddDuration(MY_DEFAULT_DURATION);
+        animator.setRemoveDuration(MY_DEFAULT_DURATION);
+        recyclerView.setItemAnimator(animator);
+
         adapter.setOnItemClickListener((view, position) -> { // Установим слушателя
             toastOnItemClickListener(position);
             showNote(data.getCardData(position-1)); // Магическая -1, для приведения 1-ой позиции списка заметок к 0-му индекса массива
@@ -185,30 +193,19 @@ public class MainFragment extends Fragment implements OnRegisterContext {
         // К тому же, фрагмент для списка заметок будто добавляется дважды, тогда это мешает и корректному SaveInstance
         int id = item.getItemId();
         switch (id) {
-            //TODO Здорово, только вот в массив нужно записывать тоже изменения (касается переиманования и удаления также)
+            // TODO Здорово, только вот в массив нужно записывать тоже изменения (касается переиманования и удаления также)
             case (R.id.add_note__main_menu):
                 toastOnOptionsItemSelected("Добавление новой заметки");
-                // data.addCardData(new CardData("Новая заметка", "Текст", "#BC18E011", Calendar.getInstance().getTime()));
-                // adapter.notifyItemInserted(data.size() - 1);
-                // recyclerView.scrollToPosition(data.size() - 1);
 
                 navigation.addFragment(CardFragment.newInstance(note), isLandscape, true);
-                publisher.subscribe(new Observer() {
-                    @Override
-                    public void updateCardData(CardData cardData) {
-                        //TODO:
-                        // Как новый способ добавляет? Всё время предыдущая открытая копируется в шаблон.. Если только не создание при запуске
-                        data.addCardData(cardData);
-                        adapter.notifyItemInserted(data.size() - 1); // Говорит адаптеру добавить элемент в RecyclerView
-                        recyclerView.scrollToPosition(data.size() - 1); // Упрощенный scrollToPosition()
-                    }
+                publisher.subscribe(cardData -> {
+                    // TODO: Как новый способ добавляет? Всё время предыдущая открытая копируется в шаблон.. Если только не создание при запуске
+                    data.addCardData(cardData);
+                    adapter.notifyItemInserted(data.size() - 1); // Говорит адаптеру добавить элемент в RecyclerView
+                    recyclerView.smoothScrollToPosition(data.size() - 1); // scroll для анимации
+                    // recyclerView.scrollToPosition(data.size() - 1); // Упрощенный scroll
                 });
                 return true;
-                /*FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                Fragment currentFragment =  fragmentManager.findFragmentById(R.id.fragment_container);
-                fragmentTransaction.replace(R.id.fragment_container, currentFragment);
-                fragmentTransaction.commit();*/
             case R.id.notes_view_choice__main_menu:
                 toastOnOptionsItemSelected("Выбор вида представления");
                 return true;
@@ -257,14 +254,6 @@ public class MainFragment extends Fragment implements OnRegisterContext {
                 return true;
             case R.id.rename__context_main:
                 toastOnOptionsItemSelected("Заметка переименована");
-                /*data.updateCardData(position,
-                        new CardData("Заметка " + position,
-                                data.getCardData(position).getText(),
-                                data.getCardData(position).getColor()
-                              , Calendar.getInstance().getTime()
-                        ));
-                adapter.notifyItemChanged(position);*/
-
                 navigation.addFragment(CardFragment.newInstance(data.getCardData(position)),true, true);
                 publisher.subscribe(new Observer() {
                     @Override

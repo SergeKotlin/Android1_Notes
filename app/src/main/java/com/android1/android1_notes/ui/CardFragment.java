@@ -88,13 +88,11 @@ public class CardFragment extends Fragment {
 
     @Override @SuppressLint("Recycle")
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        View view = showNote(inflater, container);
         View view = inflater.inflate(R.layout.fragment_note, container, false); // Получаем головной элемент из макета
         initView(view);
         if (note != null) { // если cardData пустая, то это добавление
             inflateView();
         }
-
         initPopupMenu(view);
         setHasOptionsMenu(true); // Регестрируем меню приложения для фрагмента! Не забываем
         return view;
