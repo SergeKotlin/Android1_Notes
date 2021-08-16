@@ -218,7 +218,7 @@ public class MainFragment extends Fragment implements OnRegisterContext {
                 publisher.subscribe(cardData -> {
                     data.addCardData(cardData);
                     adapter.notifyItemInserted(data.size() - 1); // Говорит адаптеру добавить элемент в RecyclerView
-                    recyclerView.smoothScrollToPosition(data.size() - 1); // scroll для анимации
+//todo не работает больше recyclerView.smoothScrollToPosition(data.size() - 1); // scroll для анимации
                     // recyclerView.scrollToPosition(data.size() - 1); // Упрощенный scroll
                 });
                 return true;
