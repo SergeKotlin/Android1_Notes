@@ -185,19 +185,6 @@ public class MainActivity extends AppCompatActivity {
             case (R.id.some_item):
                 toastOnOptionsItemSelected("Новая фича");
                 return true;
-            //TODO Сортировка должна быть на main фрагменте, однако toasts срабатывают лишь на активити
-            /*case R.id.sort_by_name_ascending__main_menu:
-                toastOnOptionsItemSelected("Алфавитная сортировка - по возрастанию");
-                return true;
-            case R.id.sort_by_name_descending__main_menu:
-                toastOnOptionsItemSelected("Алфавитная сортировка - по убыванию");
-                return true;
-            case R.id.sort_by_date_ascending__main_menu:
-                toastOnOptionsItemSelected("Временная сортировка - по возрастанию");
-                return true;
-            case R.id.sort_by_date_descending__main_menu:
-                toastOnOptionsItemSelected("Временная сортировка - по убыванию");
-                return true;*/
         }
         initBackAsRemoveFragment(id);
         return super.onOptionsItemSelected(item);
@@ -221,10 +208,7 @@ public class MainActivity extends AppCompatActivity {
 }
 
 // Задание.
-/* ✓ 1. Сделайте фрагмент добавления и редактирования данных, если вы ещё не сделали его.
-     2. Сделайте навигацию между фрагментами, также организуйте обмен данными между
-        фрагментами.
-     3. Создайте контекстное меню для изменения и удаления заметок.
-     4. *Изучите, каким образом можно вызывать DatePicker в виде диалогового окна. Создайте
-        текстовое поле, при нажатии на которое вызывалось бы диалоговое окно с DatePicker. */
+/* ✓ 1. Обеспечьте хранение данных приложения через Firestore.
+    2. * Организуйте аутентификацию пользователя через Google.
+    3. ** Обеспечьте вход через социальную сеть ВКонтакте или любую аналогичную. */
 // Serega, sure

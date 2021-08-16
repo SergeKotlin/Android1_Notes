@@ -28,8 +28,8 @@ import com.android1.android1_notes.MainActivity;
 import com.android1.android1_notes.Navigation;
 import com.android1.android1_notes.R;
 import com.android1.android1_notes.data.CardData;
+import com.android1.android1_notes.data.CardSourceFirebaseImpl;
 import com.android1.android1_notes.data.CardsSource;
-import com.android1.android1_notes.data.CardsSourceImpl;
 import com.android1.android1_notes.observer.Observer;
 import com.android1.android1_notes.observer.Publisher;
 
@@ -51,18 +51,21 @@ public class MainFragment extends Fragment implements OnRegisterContext {
         return new MainFragment();
     }
 
-    @Override
+    /*@Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /* Поскольку onCreateView запускается каждый раз при возврате в фрагмент,
-        данные надо создавать один раз */
+        *//* Поскольку onCreateView запускается каждый раз при возврате в фрагмент,
+        данные надо создавать один раз *//*
         data = new CardsSourceImpl(getResources()).init();  // Получим источник данных для списка
-    }
+    }*/
 
     @Override @Nullable
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         initView(view);
+
+        data = new CardSourceFirebaseImpl().init(cardsData -> adapter.notifyDataSetChanged()); // Для установки данных после чтения из Firestore
+        adapter.setDataSource(data);
 
         setHasOptionsMenu(true); // Регестрируем меню приложения для фрагмента! Не забываем
         return view;
@@ -102,13 +105,6 @@ public class MainFragment extends Fragment implements OnRegisterContext {
         }*/
     }
 
-    /*// Вызывается после создания макета фрагмента //TODO #to_Delete Помечаю на удаление. Кажется, больше не использую
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-//        initList(view); // проинициализируем список заметок
-    }*/
-
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) { // Сохраним текущую позицию (вызывается перед выходом из фрагмента)
         outState.putParcelable(CURRENT_NOTE, note);
@@ -130,7 +126,7 @@ public class MainFragment extends Fragment implements OnRegisterContext {
         // Другой вариант - new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = new MainAdapter(data, this); // Установим адаптер
+        adapter = new MainAdapter(this); // Установим адаптер
         recyclerView.setAdapter(adapter);
 
         //  Добавим разделитель карточек
@@ -185,33 +181,12 @@ public class MainFragment extends Fragment implements OnRegisterContext {
         inflater.inflate(R.menu.main_menu, menu);
     }
 
-    //TODO Нерешено
     @Override @SuppressLint("NonConstantResourceId")
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        //TODO На ландщафтной ориентации добавленные меню дублируются, так как их фрагмент остаётся присутствовать на экране
-        // Постоянно "пересоздаётся" экран/фрагмент при выборе меню
-        // К тому же, фрагмент для списка заметок будто добавляется дважды, тогда это мешает и корректному SaveInstance
-        int id = item.getItemId();
-        switch (id) {
-            // TODO Здорово, только вот в массив нужно записывать тоже изменения (касается переиманования и удаления также)
-            case (R.id.add_note__main_menu):
-                toastOnOptionsItemSelected("Добавление новой заметки");
+        return onItemSelected(item.getItemId()) || super.onOptionsItemSelected(item);
 
-                navigation.addFragment(CardFragment.newInstance(note), isLandscape, true);
-                publisher.subscribe(cardData -> {
-                    // TODO: Как новый способ добавляет? Всё время предыдущая открытая копируется в шаблон.. Если только не создание при запуске
-                    data.addCardData(cardData);
-                    adapter.notifyItemInserted(data.size() - 1); // Говорит адаптеру добавить элемент в RecyclerView
-                    recyclerView.smoothScrollToPosition(data.size() - 1); // scroll для анимации
-                    // recyclerView.scrollToPosition(data.size() - 1); // Упрощенный scroll
-                });
-                return true;
-            case R.id.notes_view_choice__main_menu:
-                toastOnOptionsItemSelected("Выбор вида представления");
-                return true;
-            //TODO !!! Сортировка должна быть здесь, на main фрагменте, но toasts срабатывают лишь на активити
-        }
-        return super.onOptionsItemSelected(item);
+        //TODO На ландщафтной ориентации добавленные меню дублируются, так как их фрагмент остаётся присутствовать на экране
+        // Будто постоянно "пересоздаётся" экран/фрагмент при выборе меню
     }
 
     private void toastOnOptionsItemSelected(CharSequence text) {
@@ -231,9 +206,26 @@ public class MainFragment extends Fragment implements OnRegisterContext {
 
     @Override @SuppressLint("NonConstantResourceId")
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        int position = adapter.getContextPosition();
-        int id = item.getItemId();
-        switch (id) {
+        return onItemSelected(item.getItemId()) || super.onContextItemSelected(item);
+    }
+
+    private boolean onItemSelected(int menuItemId){
+        switch (menuItemId){
+        // App menu part:
+            case (R.id.add_note__main_menu):
+                toastOnOptionsItemSelected("Добавление новой заметки");
+                navigation.addFragment(CardFragment.newInstance(note), isLandscape, true);
+                publisher.subscribe(cardData -> {
+                    data.addCardData(cardData);
+                    adapter.notifyItemInserted(data.size() - 1); // Говорит адаптеру добавить элемент в RecyclerView
+                    recyclerView.smoothScrollToPosition(data.size() - 1); // scroll для анимации
+                    // recyclerView.scrollToPosition(data.size() - 1); // Упрощенный scroll
+                });
+                return true;
+            case R.id.notes_view_choice__main_menu:
+                toastOnOptionsItemSelected("Выбор вида представления");
+                return true;
+        // Context menu part:
             case R.id.copy_note__context_main:
                 toastOnOptionsItemSelected("Заметка скопирована");
                 return true;
@@ -253,23 +245,25 @@ public class MainFragment extends Fragment implements OnRegisterContext {
                 toastOnOptionsItemSelected("Детали заметки");
                 return true;
             case R.id.rename__context_main:
+                int updatePosition = adapter.getContextPosition();
                 toastOnOptionsItemSelected("Заметка переименована");
-                navigation.addFragment(CardFragment.newInstance(data.getCardData(position)),true, true);
+                navigation.addFragment(CardFragment.newInstance(data.getCardData(updatePosition)),true, true);
                 publisher.subscribe(new Observer() {
                     @Override
                     public void updateCardData(CardData cardData) {
-                        data.updateCardData(position, cardData);
-                        adapter.notifyItemChanged(position);
+                        data.updateCardData(updatePosition, cardData);
+                        adapter.notifyItemChanged(updatePosition);
                     }
                 });
                 return true;
             case R.id.delete__context_main:
+                int deletePosition = adapter.getContextPosition();
                 toastOnOptionsItemSelected("Заметка удалена");
-                data.deleteCardData(position);
-                adapter.notifyItemRemoved(position);
+                data.deleteCardData(deletePosition);
+                adapter.notifyItemRemoved(deletePosition);
                 return true;
         }
-        return super.onContextItemSelected(item);
+        return false;
     }
 
     @Override

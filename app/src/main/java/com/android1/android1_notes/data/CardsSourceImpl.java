@@ -21,7 +21,7 @@ public class CardsSourceImpl implements CardsSource {
         this.resources = resources;
     }
 
-    public CardsSourceImpl init(){
+    public CardsSourceImpl init(CardsSourceResponse cardsSourceResponse){
         String[] noteNames = resources.getStringArray(R.array.notes_names); // названия из ресурсов
         String[] noteTexts = resources.getStringArray(R.array.notes); // тексты заметок из ресурсов
         String[] noteColors = initNotesColors(noteNames.length); // цвета заметок из ресурсов
@@ -29,6 +29,11 @@ public class CardsSourceImpl implements CardsSource {
         for (int i = 0; i < noteNames.length; i++) { // заполнение источника данных
             dataSource.add(new CardData(noteNames[i], noteTexts[i], noteColors[i], Calendar.getInstance().getTime()));
         }
+
+        if (cardsSourceResponse != null){
+            cardsSourceResponse.initialized(this);
+        }
+
         return this;
     }
 
@@ -72,8 +77,8 @@ public class CardsSourceImpl implements CardsSource {
     @Override
     public void addCardData(CardData cardData) {
         dataSource.add(cardData);
-        /* Примечание!:
-        При выборе пункта добавления вызываем метод источника данных addCardData(),
+        // Примечание!:
+        /* При выборе пункта добавления вызываем метод источника данных addCardData(),
         который добавит данные в список. Затем обязательно надо предупредить RecyclerView.Adapter,
         что мы добавили новую запись, чтобы эта запись была отрисована на экране, методом
         adapter.notifyItemInserted() с указанием позиции этого элемента.

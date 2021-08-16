@@ -22,15 +22,23 @@ import java.text.SimpleDateFormat;
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
     private final static String TAG = "MainAdapter";
-    private final CardsSource dataSource; // Любая списковская структура данных, и элемент списка во вьюхе м.б любым - кроме фрагментов, они не допускаются
+    private CardsSource dataSource; // Любая списковская структура данных, и элемент списка во вьюхе м.б любым - кроме фрагментов, они не допускаются
     private OnItemClickListener itemClickListener; // Слушатель, устанавливается извне
     private final OnRegisterContext fragment; // Чтобы повесить контекстное меню, а также contextPosition
     // !Передавая интерфейс вместо фрагмента — мы т.о образом передаём только "разрешенную часть" фрагмента, что и описана в интерфейса
     private int contextPosition;
 
-    public MainAdapter(CardsSource dataSource, OnRegisterContext fragment) { // Передаём в конструктор источник данных (массив. А м.б и запрос к БД)
-        this.dataSource = dataSource;
+    public MainAdapter(OnRegisterContext fragment) { // Передаём в конструктор источник данных (массив. А м.б и запрос к БД)
         this.fragment = fragment;
+    }
+
+    public void setDataSource(CardsSource dataSource){
+        this.dataSource = dataSource;
+        notifyDataSetChanged();
+        // Примечание
+            /* Поскольку запрос на получение данных стал асинхронным, это надо учесть и в списке. Источник
+            данных будем подставлять не сразу, а после получения данных. Соответственно, появляется метод
+            установки данных для RecyclerView. */
     }
 
     // Создадим новый пользовательский элемент
