@@ -3,9 +3,6 @@ package com.android1.android1_notes.data;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -54,12 +51,7 @@ public class CardSourceFirebaseImpl implements CardsSource {
                         Log.d(TAG, "get failed with ", task.getException());
                     }
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "get failed with ", e);
-                    }
-                });
+                .addOnFailureListener(e -> Log.d(TAG, "get failed with ", e));
         return this;
     }
 
@@ -79,14 +71,15 @@ public class CardSourceFirebaseImpl implements CardsSource {
     @Override
     public void deleteCardData(int position) {
         // Удалить документ с определённым идентификатором
-        collection.document(cardsData.get(position).getId()).delete();
+        String id = cardsData.get(position).getId();
+        collection.document(id).delete();
         cardsData.remove(position);
     }
 
     @Override
     public void updateCardData(int position, CardData cardData) {
-        String id = cardData.getId();
         // Изменить документ по идентификатору
+        String id = cardData.getId();
         collection.document(id).set(CardDataMapping.toDocument(cardData));
     }
 

@@ -116,14 +116,18 @@ public class CardFragment extends Fragment {
         String name = this.noteNameView.getText().toString();
         String text = this.editTextNote.getText().toString();
         Date date = getDateFromDatePicker();
-
         String color;
         if (note != null){
             color = note.getColor();
+
+            // ! Критически важный пункт для работы функции заметки "update"(rename)
+            CardData answer = new CardData(name, text, color, date);
+            answer.setId(note.getId()); // заметка не пустая, есть из чего сформировать ответ, зададим ей индекс
+            return answer;
         } else {
             color = "#EFD446"; // по умолчанию заметки жёлтые, R.color.yellow_note;
+            return new CardData(name, text, color, date);
         }
-        return new CardData(name, text, color, date);
     }
 
     // Получение даты из DatePicker

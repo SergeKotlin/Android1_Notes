@@ -30,7 +30,6 @@ import com.android1.android1_notes.R;
 import com.android1.android1_notes.data.CardData;
 import com.android1.android1_notes.data.CardSourceFirebaseImpl;
 import com.android1.android1_notes.data.CardsSource;
-import com.android1.android1_notes.observer.Observer;
 import com.android1.android1_notes.observer.Publisher;
 
 public class MainFragment extends Fragment implements OnRegisterContext {
@@ -189,13 +188,6 @@ public class MainFragment extends Fragment implements OnRegisterContext {
         // Будто постоянно "пересоздаётся" экран/фрагмент при выборе меню
     }
 
-    private void toastOnOptionsItemSelected(CharSequence text) {
-        Toast toast = Toast.makeText(getContext(),
-                text, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.END, 0, 0);
-        toast.show();
-    }
-
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
@@ -209,6 +201,7 @@ public class MainFragment extends Fragment implements OnRegisterContext {
         return onItemSelected(item.getItemId()) || super.onContextItemSelected(item);
     }
 
+    @SuppressLint("NonConstantResourceId")
     private boolean onItemSelected(int menuItemId){
         switch (menuItemId){
         // App menu part:
@@ -245,25 +238,33 @@ public class MainFragment extends Fragment implements OnRegisterContext {
                 toastOnOptionsItemSelected("Детали заметки");
                 return true;
             case R.id.rename__context_main:
-                int updatePosition = adapter.getContextPosition();
                 toastOnOptionsItemSelected("Заметка переименована");
+                int updatePosition = adapter.getContextPosition();
                 navigation.addFragment(CardFragment.newInstance(data.getCardData(updatePosition)),true, true);
-                publisher.subscribe(new Observer() {
-                    @Override
-                    public void updateCardData(CardData cardData) {
-                        data.updateCardData(updatePosition, cardData);
-                        adapter.notifyItemChanged(updatePosition);
-                    }
+                publisher.subscribe(cardData -> {
+                    //
+                    data.updateCardData(updatePosition, cardData);
+                    //
+                    adapter.notifyItemChanged(updatePosition);
                 });
                 return true;
             case R.id.delete__context_main:
-                int deletePosition = adapter.getContextPosition();
                 toastOnOptionsItemSelected("Заметка удалена");
+                int deletePosition = adapter.getContextPosition();
+                //
                 data.deleteCardData(deletePosition);
+                //
                 adapter.notifyItemRemoved(deletePosition);
                 return true;
         }
         return false;
+    }
+
+    private void toastOnOptionsItemSelected(CharSequence text) {
+        Toast toast = Toast.makeText(getContext(),
+                text, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.END, 0, 0);
+        toast.show();
     }
 
     @Override

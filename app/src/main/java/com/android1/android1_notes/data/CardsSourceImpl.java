@@ -21,7 +21,7 @@ public class CardsSourceImpl implements CardsSource {
         this.resources = resources;
     }
 
-    public CardsSourceImpl init(CardsSourceResponse cardsSourceResponse){
+    public CardsSource init(CardsSourceResponse cardsSourceResponse){
         String[] noteNames = resources.getStringArray(R.array.notes_names); // названия из ресурсов
         String[] noteTexts = resources.getStringArray(R.array.notes); // тексты заметок из ресурсов
         String[] noteColors = initNotesColors(noteNames.length); // цвета заметок из ресурсов
