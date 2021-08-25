@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Notes</string>
     <string name="back_as_remove_fragment">Back as remove fragment</string>
     <string name="use_backstack_settings">Use BackStack:</string>
@@ -37,6 +37,11 @@
     <string name="label_for_note">New Label</string>
     <string name="pin_to_top">Pin Note to Top</string>
     <string name="rename_note">Rename Note</string>
+    <!--  Lesson 10 (Authentication & Google)  -->
+    <string name="continue_" tools:ignore="TypographyEllipsis">
+        Продолжить...
+    </string>
+    <string name="sign_out">Выйти</string>
 </resources>
 
 <!-- Выпиливаю

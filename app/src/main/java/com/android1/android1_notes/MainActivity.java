@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentManager;
 import com.android1.android1_notes.data.Settings;
 import com.android1.android1_notes.observer.Publisher;
 import com.android1.android1_notes.ui.MainFragment;
+import com.android1.android1_notes.ui.StartFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     /* Возможен Upgrade для popBackStack(name, flags) к определённому состоянию. 9-ый урок Аникина, 2 февраля
     private static final String FRAGMENT_NOTES_LIST_TAG = "NotesList";
     private static final String FRAGMENT_NOTE_TAG = "Note"; */
+
     private boolean isLandscape;
     private Navigation navigation;
     private final Publisher publisher = new Publisher();
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         readSettings();
         initView();
-        navigation(MainFragment.newInstance(), false); // Наполняем список заметок
+        supportNavigation(StartFragment.newInstance(), false); // Наполняем список заметок
     }
 
     private void readSettings(){
@@ -95,21 +97,20 @@ public class MainActivity extends AppCompatActivity {
     private boolean navigateFragment(int id) {
             switch(id){
                 case R.id.action_settings:
-                    navigation(new SettingsFragment(), true);
+                    supportNavigation(new SettingsFragment(), true);
                     return true;
                 case R.id.action_main:
-//                    navigation(new MainFragment(), true);
-                    navigation(MainFragment.newInstance(), true); //TODO !!! Меню Навигации работает с MainFragment устаревшим способом
+                    supportNavigation(MainFragment.newInstance(), true);
                     return true;
             }
             return false;
         }
 
-    private void navigation(Fragment fragment, boolean useBackStack) {
+    public void supportNavigation(Fragment fragment, boolean useBackStack) {
         isLandscape = getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE;
         navigation = new Navigation(getSupportFragmentManager(), isLandscape);
-        getNavigation().addFragment(fragment, isLandscape, useBackStack);
+        getNavigation().addFragment(fragment, useBackStack, false);
     }
 
     // Действие кнопки назад в соответствии с хранимыми настройками

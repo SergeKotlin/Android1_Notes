@@ -46,6 +46,9 @@ public class MainFragment extends Fragment implements OnRegisterContext {
     private Navigation navigation;
     private Publisher publisher;
 
+    //todo Remove if not used
+    private final long delayForRefreshMain = 500; // Пауза потока (для обновления страницы после переименования заметки на ландшафтной ор.)
+
     public static MainFragment newInstance() {
         return new MainFragment();
     }
@@ -207,13 +210,19 @@ public class MainFragment extends Fragment implements OnRegisterContext {
         // App menu part:
             case (R.id.add_note__main_menu):
                 toastOnOptionsItemSelected("Добавление новой заметки");
-                navigation.addFragment(CardFragment.newInstance(note), isLandscape, true);
+                navigation.addFragment(CardFragment.newInstance(note), true, true);
                 publisher.subscribe(cardData -> {
                     data.addCardData(cardData);
                     adapter.notifyItemInserted(data.size() - 1); // Говорит адаптеру добавить элемент в RecyclerView
-//todo не работает больше recyclerView.smoothScrollToPosition(data.size() - 1); // scroll для анимации
+                    // todo не работает больше recyclerView.smoothScrollToPosition(data.size() - 1); // scroll для анимации
                     // recyclerView.scrollToPosition(data.size() - 1); // Упрощенный scroll
                 });
+
+                //TODO Что при "add", что при "rename" на ландшафтной ор. не обновляет список заметок, однако в базу добавляет.
+                // Нужно просто как-то обновить фрагмент по кнопке Back. (Либо вернуть в Navigation переименование на месте списка, а показ в новой фрагменте)
+                // Отсрочим обновление, чтобы всё опубликовалось как следует. //todo это кастыль
+                //new Handler(Looper.getMainLooper()).postDelayed(() -> navigation.refreshMain(), delayForRefreshMain); // Отсрочим действие
+
                 return true;
             case R.id.notes_view_choice__main_menu:
                 toastOnOptionsItemSelected("Выбор вида представления");
