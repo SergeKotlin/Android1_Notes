@@ -6,6 +6,7 @@
     <dimen name="nav_header_height">200dp</dimen>
     <dimen name="nav_header_dimen">42sp</dimen>
     <dimen name="cards_size">30sp</dimen>
+    <dimen name="cards_date_size_and_padding">12sp</dimen>
     <dimen name="note_name_text_view">12sp</dimen>
     <dimen name="fragment_start_elements">8dp</dimen>
 </resources>

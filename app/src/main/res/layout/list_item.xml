@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="15dp"
@@ -27,7 +28,9 @@
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/cards_size" />
+            android:textSize="@dimen/cards_date_size_and_padding"
+            android:paddingStart="@dimen/cards_date_size_and_padding"
+            tools:ignore="RtlSymmetry" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

@@ -42,6 +42,8 @@
         Продолжить...
     </string>
     <string name="sign_out">Выйти</string>
+    <string name="alert_to_delete">Удалить заметку?</string>
+    <string name="btn_alert_to_delete">Удалить бесповоротно</string>
 </resources>
 
 <!-- Выпиливаю

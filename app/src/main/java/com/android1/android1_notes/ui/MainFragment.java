@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -258,15 +259,31 @@ public class MainFragment extends Fragment implements OnRegisterContext {
                 });
                 return true;
             case R.id.delete__context_main:
-                toastOnOptionsItemSelected("Заметка удалена");
-                int deletePosition = adapter.getContextPosition();
-                //
-                data.deleteCardData(deletePosition);
-                //
-                adapter.notifyItemRemoved(deletePosition);
+                alertToDelete();
                 return true;
         }
         return false;
+    }
+
+    private void alertToDelete() {
+        // Диалоговое подтверждение
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.alert_to_delete)
+                .setIcon(R.mipmap.ic_launcher_round)
+                .setCancelable(true)
+                .setPositiveButton(R.string.btn_alert_to_delete,
+                        (dialog, id) -> actionForDelete());
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void actionForDelete() {
+        toastOnOptionsItemSelected("Заметка удалена");
+        int deletePosition = adapter.getContextPosition();
+        //
+        data.deleteCardData(deletePosition);
+        //
+        adapter.notifyItemRemoved(deletePosition);
     }
 
     private void toastOnOptionsItemSelected(CharSequence text) {
