@@ -3,6 +3,7 @@ package com.android1.android1_notes.ui;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import com.android1.android1_notes.observer.Publisher;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 public class CardFragment extends Fragment {
 
@@ -102,6 +104,7 @@ public class CardFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+        // Действие к сбору заметки - onStop() для фразмента
         note = collectCardData();
     }
 
@@ -125,8 +128,21 @@ public class CardFragment extends Fragment {
             answer.setId(note.getId()); // заметка не пустая, есть из чего сформировать ответ, зададим ей индекс
             return answer;
         } else {
-            color = "#EFD446"; // по умолчанию заметки жёлтые, R.color.yellow_note;
+            color = supportNoteColor();
             return new CardData(name, text, color, date);
+        }
+    }
+
+    private String supportNoteColor() {
+        Resources resources = getResources();
+        String[] colors = resources.getStringArray(R.array.notes_colors);
+        String color = "#EFD446"; // по умолчанию заметки жёлтые, R.color.yellow_note;
+        if (colors.length <= 0) {
+            return color;
+        } else {
+            Random random = new Random();
+            int rand_value = random.nextInt(colors.length);
+            return colors[rand_value];
         }
     }
 
@@ -138,6 +154,8 @@ public class CardFragment extends Fragment {
         cal.set(Calendar.DAY_OF_MONTH, this.datePicker.getDayOfMonth());
         return cal.getTime();
     }
+
+
 
     private View initView(View view) {
         editTextNote = view.findViewById(R.id.textNote); // найти в контейнере элемент-заметку (куда сетить)
