@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="15dp"
+    app:cardElevation="3dp">
+
+    <!--  Как и у NestedScrollView - у CardView м.б лишь один ребёнок.
+          Т.е наполнение стоит заворачивать в какой-то общий View-элемент  -->
+
+    <!--  Если в content_main стоит scroll над списков, то в CardView скрол надо отключать  -->
+
+    <!--  Элемент списка м.б любой сложности - однако, кроме фрагментов. Они не допускаются  -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/listItemTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/cards_size" />
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/cards_date_size_and_padding"
+            android:paddingStart="@dimen/cards_date_size_and_padding"
+            tools:ignore="RtlSymmetry" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
