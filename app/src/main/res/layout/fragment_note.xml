@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Это макет фрагмента для показываемой заметки -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.CardFragment">
+
+    <!--  Заголовок страницы заметки  -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        style="@style/noteMenu">
+        <ImageButton
+            android:id="@+id/buttonCopyNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/noteMenu"
+            android:contentDescription="@string/btnCopyNote"
+            android:src="@drawable/ic_menu_copy_material" />
+        <ImageButton
+            android:id="@+id/buttonShareNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/noteMenu"
+            android:contentDescription="@string/share_note"
+            android:src="@drawable/ic_menu_share_material" />
+        <ImageButton
+            android:id="@+id/buttonMoreActionsNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/noteMenu"
+            android:contentDescription="@string/btnMoreDetailsNote"
+            android:src="@drawable/ic_menu_moreoverflow_material" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/noteDateUpdate"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        style="@style/noteMenu">
+
+        <!--  TODO Эффективнее делить пространство между DatePicker и EditText.
+               Календарь лучше вынести во всплывающее меню  -->
+        <DatePicker
+            android:id="@+id/inputDate"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:layout_gravity="center"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner" />
+        <!-- Также можно делать режим календаря
+        android:datePickerMode="calendar"
+        и режим отображения календаря в spinner-режиме
+        android:calendarViewShown="true" -->
+
+        <Button
+            android:id="@+id/applyDateBtn"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="@string/apply_date_update" />
+
+    </LinearLayout>
+
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/nameNote"
+        android:inputType="textMultiLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/universal_text_size_and_padding"
+        android:text="@string/default_is_first_note_name"
+        tools:ignore="TextViewEdits" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/textNote"
+        android:inputType="textMultiLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/default_is_first_note_text"
+        android:gravity="top" />
+
+</LinearLayout>
