@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -40,6 +41,7 @@ public class CardFragment extends Fragment {
     private AppCompatEditText noteNameView;
     private AppCompatEditText editTextNote;
     private DatePicker datePicker;
+    private Button setDate;
 
     // Для редактирования данных
     // Ps я не заморачивался, editInfo выступает лишь признаком для перегрузки фабрики на редактирование
@@ -95,6 +97,7 @@ public class CardFragment extends Fragment {
         if (note != null) { // если cardData пустая, то это добавление
             inflateView();
         }
+        buttonsListeners(view);
         initPopupMenu(view);
         setHasOptionsMenu(true); // Регестрируем меню приложения для фрагмента! Не забываем
         return view;
@@ -113,6 +116,45 @@ public class CardFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         publisher.notifySingle(note);
+    }
+
+    // Получение даты из DatePicker
+    private Date getDateFromDatePicker() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, this.datePicker.getYear());
+        cal.set(Calendar.MONTH, this.datePicker.getMonth());
+        cal.set(Calendar.DAY_OF_MONTH, this.datePicker.getDayOfMonth());
+        return cal.getTime();
+    }
+
+    private View initView(View view) {
+        editTextNote = view.findViewById(R.id.textNote); // найти в контейнере элемент-заметку (куда сетить)
+        noteNameView = view.findViewById(R.id.nameNote);
+        datePicker = view.findViewById(R.id.inputDate);
+        setDate = view.findViewById(R.id.applyDateBtn);
+        return view;
+    }
+
+    // Установка даты в DatePicker
+    private void initDatePicker(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        this.datePicker.init(calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH),
+                null);
+    }
+
+    private void inflateView(){
+        editTextNote.setText(note.getText());
+        noteNameView.setText(note.getName());
+        initDatePicker(note.getDate());
+    }
+
+    private void buttonsListeners(View view) {
+        setDate.setOnClickListener(v -> {
+            view.findViewById(R.id.noteDateUpdate).setVisibility(View.GONE);
+        });
     }
 
     private CardData collectCardData(){
@@ -144,40 +186,6 @@ public class CardFragment extends Fragment {
             int rand_value = random.nextInt(colors.length);
             return colors[rand_value];
         }
-    }
-
-    // Получение даты из DatePicker
-    private Date getDateFromDatePicker() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, this.datePicker.getYear());
-        cal.set(Calendar.MONTH, this.datePicker.getMonth());
-        cal.set(Calendar.DAY_OF_MONTH, this.datePicker.getDayOfMonth());
-        return cal.getTime();
-    }
-
-
-
-    private View initView(View view) {
-        editTextNote = view.findViewById(R.id.textNote); // найти в контейнере элемент-заметку (куда сетить)
-        noteNameView = view.findViewById(R.id.nameNote);
-        datePicker = view.findViewById(R.id.inputDate);
-        return view;
-    }
-
-    private void inflateView(){
-        editTextNote.setText(note.getText());
-        noteNameView.setText(note.getName());
-        initDatePicker(note.getDate());
-    }
-
-    // Установка даты в DatePicker
-    private void initDatePicker(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        this.datePicker.init(calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH),
-                null);
     }
 
     private void initPopupMenu(View view) {
@@ -224,6 +232,10 @@ public class CardFragment extends Fragment {
             popupMenu.setOnMenuItemClickListener(item -> {
                 int id = item.getItemId();
                 switch (id) {
+                    case R.id.update_date__popup_note:
+                        toastOnOptionsItemSelected("Изменить дату заметки");
+                        view.findViewById(R.id.noteDateUpdate).setVisibility(View.VISIBLE);
+                        return true;
                     case R.id.label_for_note__popup_note:
                         toastOnOptionsItemSelected("Установить новую метку");
                         return true;

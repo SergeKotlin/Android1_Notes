@@ -36,14 +36,17 @@
     <string name="info_details_note">Note Info</string>
     <string name="label_for_note">New Label</string>
     <string name="pin_to_top">Pin Note to Top</string>
-    <string name="rename_note">Rename Note</string>
+    <string name="update_note">Update Note</string>
     <!--  Lesson 10 (Authentication & Google)  -->
     <string name="continue_" tools:ignore="TypographyEllipsis">
         Продолжить...
     </string>
     <string name="sign_out">Выйти</string>
+    <!--  Lesson 11 (Alerts, Fragment & etc Dialogs)  -->
     <string name="alert_to_delete">Удалить заметку?</string>
     <string name="btn_alert_to_delete">Удалить бесповоротно</string>
+    <string name="update_note_date">Update Note Date</string>
+    <string name="apply_date_update">apply date update</string>
 </resources>
 
 <!-- Выпиливаю

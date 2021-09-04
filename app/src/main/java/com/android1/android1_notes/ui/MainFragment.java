@@ -229,6 +229,17 @@ public class MainFragment extends Fragment implements OnRegisterContext {
                 toastOnOptionsItemSelected("Выбор вида представления");
                 return true;
         // Context menu part:
+            case R.id.update__context_main:
+                toastOnOptionsItemSelected("Заметка переименована");
+                int updatePosition = adapter.getContextPosition();
+                navigation.addFragment(CardFragment.newInstance(data.getCardData(updatePosition)),true, true);
+                publisher.subscribe(cardData -> {
+                    //
+                    data.updateCardData(updatePosition, cardData);
+                    //
+                    adapter.notifyItemChanged(updatePosition);
+                });
+                return true;
             case R.id.copy_note__context_main:
                 toastOnOptionsItemSelected("Заметка скопирована");
                 return true;
@@ -246,17 +257,6 @@ public class MainFragment extends Fragment implements OnRegisterContext {
                 return true;
             case R.id.info__context_main:
                 toastOnOptionsItemSelected("Детали заметки");
-                return true;
-            case R.id.rename__context_main:
-                toastOnOptionsItemSelected("Заметка переименована");
-                int updatePosition = adapter.getContextPosition();
-                navigation.addFragment(CardFragment.newInstance(data.getCardData(updatePosition)),true, true);
-                publisher.subscribe(cardData -> {
-                    //
-                    data.updateCardData(updatePosition, cardData);
-                    //
-                    adapter.notifyItemChanged(updatePosition);
-                });
                 return true;
             case R.id.delete__context_main:
                 alertToDelete();

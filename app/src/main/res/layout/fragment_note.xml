@@ -36,12 +36,45 @@
             android:src="@drawable/ic_menu_moreoverflow_material" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/noteDateUpdate"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        style="@style/noteMenu">
+
+        <!--  TODO Эффективнее делить пространство между DatePicker и EditText.
+               Календарь лучше вынести во всплывающее меню  -->
+        <DatePicker
+            android:id="@+id/inputDate"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:layout_gravity="center"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner" />
+        <!-- Также можно делать режим календаря
+        android:datePickerMode="calendar"
+        и режим отображения календаря в spinner-режиме
+        android:calendarViewShown="true" -->
+
+        <Button
+            android:id="@+id/applyDateBtn"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="@string/apply_date_update" />
+
+    </LinearLayout>
+
+
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/nameNote"
         android:inputType="textMultiLine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/note_name_text_view"
+        android:textSize="@dimen/universal_text_size_and_padding"
         android:text="@string/default_is_first_note_name"
         tools:ignore="TextViewEdits" />
 
@@ -52,19 +85,5 @@
         android:layout_height="wrap_content"
         android:text="@string/default_is_first_note_text"
         android:gravity="top" />
-
-    <!--  TODO Эффективнее делить пространство между DatePicker и EditText.
-           Календарь лучше вынести во всплывающее меню  -->
-    <DatePicker
-        android:id="@+id/inputDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:calendarViewShown="false"
-        android:datePickerMode="spinner" />
-    <!-- Также можно делать режим календаря
-    android:datePickerMode="calendar"
-    и режим отображения календаря в spinner-режиме
-    android:calendarViewShown="true" -->
 
 </LinearLayout>

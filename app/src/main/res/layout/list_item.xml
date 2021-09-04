@@ -28,8 +28,8 @@
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/cards_date_size_and_padding"
-            android:paddingStart="@dimen/cards_date_size_and_padding"
+            android:textSize="@dimen/universal_text_size_and_padding"
+            android:paddingStart="@dimen/universal_text_size_and_padding"
             tools:ignore="RtlSymmetry" />
     </LinearLayout>
 
