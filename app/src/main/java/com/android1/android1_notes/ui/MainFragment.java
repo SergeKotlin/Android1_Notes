@@ -187,9 +187,6 @@ public class MainFragment extends Fragment implements OnRegisterContext {
     @Override @SuppressLint("NonConstantResourceId")
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         return onItemSelected(item.getItemId()) || super.onOptionsItemSelected(item);
-
-        //TODO На ландщафтной ориентации добавленные меню дублируются, так как их фрагмент остаётся присутствовать на экране
-        // Будто постоянно "пересоздаётся" экран/фрагмент при выборе меню
     }
 
     @Override

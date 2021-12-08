@@ -12,7 +12,7 @@
 
     <!--  Контейнер для списка заметок  -->
     <FrameLayout
-        android:id="@+id/notes_container"
+        android:id="@+id/fragment_container"
         android:layout_width="0px"
         android:layout_height="wrap_content"
         android:layout_weight="1">

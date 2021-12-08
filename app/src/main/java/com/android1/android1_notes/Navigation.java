@@ -30,7 +30,7 @@ public class Navigation {
             if (isNoteFragment) {
                 fragmentTransaction.replace(R.id.note_container, fragment);
             } else {
-                fragmentTransaction.replace(R.id.notes_container, fragment);
+                fragmentTransaction.replace(R.id.fragment_container, fragment);
             }
         } else {
             fragmentTransaction.replace(R.id.fragment_container, fragment);
